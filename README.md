@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Alarmindex
 
-## Getting Started
+Dagligt formspråksindex för svenska nyhetsrubriker. Next.js-frontend som läser publicerad data från Sanity.
 
-First, run the development server:
+## Kom igång
+
+1. Skapa Sanity-projekt och kopiera project ID till `.env` (se `.env.example`)
+2. Starta Studio i `../alarmindex-studio`, kör `npm run seed`
+3. Starta frontend:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Öppna http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Sidor
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Sida | Beskrivning |
+|------|-------------|
+| `/` | Dagens rankade index |
+| `/metodik` | Metodbeskrivning |
+| `/tidning/[slug]` | Tidsserie per tidning |
+| `/dag` | Lista över publicerade dagar |
+| `/dag/[date]` | Alla tidningar en dag |
+| `/dag/[date]/[slug]` | Rubriker + reasoning |
+| `/llms.txt` | AI-synlighet |
 
-## Learn More
+## Arkitektur
 
-To learn more about Next.js, take a look at the following resources:
+```
+Scraping → AI-scoring → kod (exponeringsvikt) → granskning i Studio → publicering → Next.js
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Scoring-logik finns i `src/lib/scoring/` (spegel av Studio `lib/scoring.ts`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Förhandsvisning
 
-## Deploy on Vercel
+Se `alarmindex-studio` README. Kräver `SANITY_PREVIEW_SECRET` och `SANITY_API_READ_TOKEN` i `.env.local`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Screenshots
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vid insamling sparas två mobilbilder per löpsedel:
+
+1. **Above the fold** — exakt viewport (390×844 px), det läsaren ser utan att scrolla.
+2. **Utökad vy** — från toppen nedåt, max **2200 px** höjd (~2,6 skärmar). Räcker för fler rubriker utan att fånga hela sidan.
+
+Bilderna visas på dagsvyn per tidning och lagras i Sanity tillsammans med rubrikpoängen.
+
+## Sanity
+
+Kräver `NEXT_PUBLIC_SANITY_PROJECT_ID` och dataset `production` med publicerade `frontPageSnapshot`-dokument.
