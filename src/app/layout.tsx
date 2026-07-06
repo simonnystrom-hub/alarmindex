@@ -2,7 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Source_Serif_4, IBM_Plex_Sans } from "next/font/google";
 import { PreviewBanner } from "@/components/PreviewBanner";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_SLOGAN, SITE_TITLE } from "@/lib/site-meta";
+import { getSiteSettings } from "@/lib/sanity/queries";
+import { buildRootMetadata } from "@/lib/site-settings";
 import "./globals.css";
 
 const serif = Source_Serif_4({
@@ -21,34 +22,17 @@ const sans = IBM_Plex_Sans({
   adjustFontFallback: true,
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: "#f4f1ea",
 };
 
-export const metadata: Metadata = {
-  title: {
-    default: SITE_TITLE,
-    template: `%s — ${SITE_NAME}`,
-  },
-  description: SITE_DESCRIPTION,
-  ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
-  openGraph: {
-    title: SITE_NAME,
-    description: SITE_SLOGAN,
-    locale: "sv_SE",
-    type: "website",
-    siteName: SITE_NAME,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_NAME,
-    description: SITE_SLOGAN,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  return buildRootMetadata(settings, siteUrl);
+}
 
 export default function RootLayout({
   children,

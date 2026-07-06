@@ -62,3 +62,15 @@ export type SnapshotDetail = {
   screenshotExtendedHeight?: number | null
   headlines: HeadlineWithScore[]
 }
+
+export type SiteSettings = {
+  siteName?: string
+  defaultDescription?: string
+  siteSlogan?: string
+  homeTitle?: string
+  homeDescription?: string
+  metodikTitle?: string
+  metodikDescription?: string
+  dagTitle?: string
+  dagDescription?: string
+}

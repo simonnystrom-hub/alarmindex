@@ -1,4 +1,4 @@
-import type {DailyEdition, HeadlineWithScore, Newspaper, SnapshotDetail} from './types'
+import type {DailyEdition, HeadlineWithScore, Newspaper, SiteSettings, SnapshotDetail} from './types'
 import {safeFetch, safeFetchOne} from './fetch'
 
 const publishedFilter = '&& ($preview || publicationStatus == "published")'
@@ -238,5 +238,21 @@ export async function getDayOverview(date: string): Promise<
       }
     } | order(dailyScore desc)`,
     {date},
+  )
+}
+
+export async function getSiteSettings(): Promise<SiteSettings | null> {
+  return safeFetchOne<SiteSettings>(
+    `*[_type == "siteSettings" && _id == "siteSettings"][0]{
+      siteName,
+      defaultDescription,
+      siteSlogan,
+      homeTitle,
+      homeDescription,
+      metodikTitle,
+      metodikDescription,
+      dagTitle,
+      dagDescription
+    }`,
   )
 }

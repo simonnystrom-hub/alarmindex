@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ChartSkeleton } from "@/components/charts/ChartSkeleton";
 import { MovingAverageSection } from "@/components/charts/MovingAverageSection";
@@ -12,9 +13,16 @@ import {
   getDailyEditionsWithHeadlines,
   getIndexHistory,
   getLatestPublishedDate,
+  getSiteSettings,
 } from "@/lib/sanity/queries";
+import { buildPageMetadata } from "@/lib/site-settings";
 
 export const revalidate = 3600;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return buildPageMetadata(settings, "home");
+}
 
 const ComparisonLineChart = dynamic(
   () =>

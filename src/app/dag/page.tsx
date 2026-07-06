@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/PageHeader";
 import { NewspaperSwatch } from "@/components/NewspaperSwatch";
-import { getPublishedDaySummaries } from "@/lib/sanity/queries";
+import { getPublishedDaySummaries, getSiteSettings } from "@/lib/sanity/queries";
+import { buildPageMetadata } from "@/lib/site-settings";
 
 export const revalidate = 3600;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return buildPageMetadata(settings, "dag");
+}
 
 function formatDayLabel(isoDate: string): string {
   const date = new Date(`${isoDate}T12:00:00`);

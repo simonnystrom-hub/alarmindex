@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AlarmIndexScale } from "@/components/AlarmIndexScale";
+import { getSiteSettings } from "@/lib/sanity/queries";
+import { buildPageMetadata } from "@/lib/site-settings";
 
-export const metadata: Metadata = {
-  title: "Metodik — Alarmindex",
-  description:
-    "Så mäter Alarmindex rubrikers formspråk: fem dimensioner, mobil exponering, öppen metodik.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return buildPageMetadata(settings, "metodik");
+}
 
 const dimensions = [
   {
