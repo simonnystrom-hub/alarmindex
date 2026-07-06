@@ -6,13 +6,14 @@ export const alt = `${SITE_NAME} — ${SITE_SLOGAN}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const newspaperSlugs = ["expressen", "aftonbladet", "gp", "dn", "svd"] as const;
+const newspaperSlugs = ["expressen", "aftonbladet", "gp", "dn", "svd", "sydsvenskan"] as const;
 const barWidths: Record<(typeof newspaperSlugs)[number], string> = {
   expressen: "72%",
   aftonbladet: "58%",
   gp: "42%",
   dn: "38%",
   svd: "35%",
+  sydsvenskan: "40%",
 };
 
 export default function Image() {

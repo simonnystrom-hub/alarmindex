@@ -8,7 +8,7 @@ Vi bedömer inte journalistisk kvalitet, sanningshalt eller politisk vinkling.
 
 - Metodik: /metodik
 - Dagens index: /
-- Tidningar: Aftonbladet, Expressen, Göteborgs-Posten, DN, SvD
+- Tidningar: Aftonbladet, Expressen, Göteborgs-Posten, DN, SvD, Sydsvenskan
 `;
 
   return new Response(body, {

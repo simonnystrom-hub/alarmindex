@@ -5,6 +5,7 @@ export const NEWSPAPER_COLORS: Record<string, string> = {
   gp: "#047857",
   dn: "#1d4ed8",
   svd: "#b45309",
+  sydsvenskan: "#0f766e",
 };
 
 /** Ljusa bakgrunder som matchar huvudfärgen. */
@@ -14,6 +15,7 @@ export const NEWSPAPER_COLOR_SOFT: Record<string, string> = {
   gp: "#ecfdf5",
   dn: "#eff6ff",
   svd: "#fffbeb",
+  sydsvenskan: "#f0fdfa",
 };
 
 export function newspaperColor(slug: string): string {
@@ -31,6 +33,7 @@ export const NEWSPAPER_SHORT: Record<string, string> = {
   gp: "GP",
   dn: "DN",
   svd: "SvD",
+  sydsvenskan: "SyS",
 };
 
 export function newspaperShortLabel(slug: string, fallback?: string): string {

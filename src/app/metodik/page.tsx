@@ -38,6 +38,7 @@ const newspapers = [
   "Göteborgs-Posten",
   "Dagens Nyheter",
   "Svenska Dagbladet",
+  "Sydsvenskan",
 ];
 
 export default function MethodologyPage() {
