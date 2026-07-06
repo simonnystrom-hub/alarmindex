@@ -1,12 +1,5 @@
 const sources = [
   {
-    href: "https://www.svt.se/nyheter/lar-dig-hantera-tyngre-nyheter",
-    title: "Så påverkas vi av tunga och hotfulla nyhetsflöden",
-    description:
-      "Psykolog om oro, hotkänsla och växande nyhetsundvikande — med data från Reuters Institute om Sverige.",
-    publisher: "SVT Nyheter",
-  },
-  {
     href: "https://www.apa.org/monitor/2022/11/strain-media-overload",
     title: "Rubrikstress och nyhetsöverbelastning",
     description:
@@ -44,7 +37,7 @@ export function SourceArticleCards() {
         Hur alarmistiska nyheter påverkar oss
       </h2>
 
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid gap-4 sm:grid-cols-2">
         {sources.map((source) => (
           <li key={source.href}>
             <a
