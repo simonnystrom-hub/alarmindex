@@ -100,7 +100,31 @@ export async function getDailyEditions(date: string): Promise<DailyEdition[]> {
       dailyScore,
       newspaper->{_id, name, ${newspaperSlugField}, sortOrder},
       "drivingHeadline": drivingHeadline->{
+        _id,
         text,
+        "displayScore": *[_type == "headlineScore" && references(^._id)][0].displayScore
+      }
+    } | order(dailyScore desc)`,
+    {date},
+  )
+}
+
+export async function getDailyEditionsWithHeadlines(date: string): Promise<DailyEdition[]> {
+  return safeFetch(
+    `*[_type == "frontPageSnapshot" && date == $date ${publishedFilter}] {
+      _id,
+      date,
+      dailyScore,
+      newspaper->{_id, name, ${newspaperSlugField}, sortOrder},
+      "drivingHeadline": drivingHeadline->{
+        _id,
+        text,
+        "displayScore": *[_type == "headlineScore" && references(^._id)][0].displayScore
+      },
+      "headlines": *[_type == "headline" && references(^._id)] {
+        _id,
+        text,
+        aboveFoldMobile,
         "displayScore": *[_type == "headlineScore" && references(^._id)][0].displayScore
       }
     } | order(dailyScore desc)`,

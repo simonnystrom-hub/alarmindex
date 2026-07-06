@@ -1,10 +1,5 @@
 import Link from "next/link";
-
-const links = [
-  { href: "/", label: "Dagens index" },
-  { href: "/dag", label: "Alla dagar" },
-  { href: "/metodik", label: "Metodik" },
-];
+import { SiteHeaderNav } from "./SiteHeaderNav";
 
 export function SiteHeader() {
   return (
@@ -19,17 +14,7 @@ export function SiteHeader() {
             <span className="hidden sm:inline">Alarmindex för svenska nyhetsrubriker</span>
           </p>
         </Link>
-        <nav className="flex gap-2 text-sm">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="inline-flex min-h-11 items-center rounded-full px-4 text-[var(--ink-muted)] transition hover:bg-[var(--surface-muted)] hover:text-[var(--ink)]"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        <SiteHeaderNav />
       </div>
     </header>
   );

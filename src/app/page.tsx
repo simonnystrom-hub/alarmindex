@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChartSkeleton } from "@/components/charts/ChartSkeleton";
 import { MovingAverageSection } from "@/components/charts/MovingAverageSection";
 import { HomeIntro } from "@/components/HomeIntro";
+import { HomeSectionNav } from "@/components/HomeSectionNav";
 import { SourceArticleCards } from "@/components/SourceArticleCards";
 import { TodayOverview } from "@/components/TodayOverview";
 import { PageHeader } from "@/components/PageHeader";
@@ -52,6 +53,8 @@ export default async function HomePage() {
           </Link>
         </div>
       </PageHeader>
+
+      <HomeSectionNav />
 
       <div className="space-y-6">
         <HomeIntro />

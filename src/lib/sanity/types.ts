@@ -11,9 +11,18 @@ export type DailyEdition = {
   dailyScore: number | null
   newspaper: Newspaper
   drivingHeadline?: {
+    _id?: string
     text: string
     displayScore?: number
   } | null
+  headlines?: DayEditionHeadline[]
+}
+
+export type DayEditionHeadline = {
+  _id: string
+  text: string
+  aboveFoldMobile: boolean
+  displayScore: number | null
 }
 
 export type HeadlineWithScore = {

@@ -71,6 +71,7 @@ export function ComparisonLineChart({
   if (data.length < 2 || newspapers.length === 0) {
     return (
       <ChartFrame
+        id="jamforelse"
         title="Jämförelse mellan tidningar"
         description="En linje per tidning."
         scoreTerm="alarmindex"
@@ -86,6 +87,7 @@ export function ComparisonLineChart({
 
   return (
     <ChartFrame
+      id="jamforelse"
       title="Jämförelse mellan tidningar"
       description="En linje per tidning."
       scoreTerm="alarmindex"

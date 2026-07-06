@@ -36,7 +36,8 @@ export function TodayOverview({ editions, date }: TodayOverviewProps) {
   if (editions.length === 0) {
     return (
       <section
-        className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface-muted)] p-6 text-center text-sm text-[var(--ink-muted)]"
+        className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface-muted)] p-6 text-center text-sm text-[var(--ink-muted)] scroll-mt-28"
+        id="dagens-lage"
         aria-labelledby="dagens-lage-heading"
       >
         <h2 id="dagens-lage-heading" className="font-serif text-xl font-semibold text-[var(--ink)]">
@@ -56,7 +57,11 @@ export function TodayOverview({ editions, date }: TodayOverviewProps) {
   const averageLevel = getAlarmLevel(average);
 
   return (
-    <section className="space-y-4" aria-labelledby="dagens-lage-heading">
+    <section
+      id="dagens-lage"
+      className="scroll-mt-28 space-y-4"
+      aria-labelledby="dagens-lage-heading"
+    >
       <header>
         <h2 id="dagens-lage-heading" className="font-serif text-xl font-semibold text-[var(--ink)]">
           Dagens läge
@@ -143,18 +148,21 @@ export function TodayOverview({ editions, date }: TodayOverviewProps) {
         </div>
       </details>
 
-      <details className="group overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 sm:px-6 [&::-webkit-details-marker]:hidden">
-          <div>
-            <h3 className="font-serif text-lg font-semibold text-[var(--ink)]">
-              Alla tidningar idag
-            </h3>
-            <p className="mt-0.5 text-sm text-[var(--ink-muted)]">
-              Sorterat efter alarmindex · {editions.length} tidningar
-            </p>
-          </div>
-          <ChevronIcon className="h-5 w-5 shrink-0 text-[var(--ink-subtle)] transition-transform group-open:rotate-180" />
-        </summary>
+      <section
+        className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]"
+        aria-labelledby="alla-tidningar-heading"
+      >
+        <header className="px-5 py-4 sm:px-6">
+          <h3
+            id="alla-tidningar-heading"
+            className="font-serif text-lg font-semibold text-[var(--ink)]"
+          >
+            Alla tidningar idag
+          </h3>
+          <p className="mt-0.5 text-sm text-[var(--ink-muted)]">
+            Sorterat efter alarmindex · {editions.length} tidningar
+          </p>
+        </header>
 
         <div className="border-t border-[var(--border)] px-5 py-5 sm:px-6">
           <ol className="grid gap-3">
@@ -222,7 +230,7 @@ export function TodayOverview({ editions, date }: TodayOverviewProps) {
             </Link>
           </p>
         </div>
-      </details>
+      </section>
     </section>
   );
 }

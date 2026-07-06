@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 
 type ChartFrameProps = {
+  id?: string;
   title: string;
   description: string;
   methodologyHref?: string;
@@ -12,6 +13,7 @@ type ChartFrameProps = {
 };
 
 export function ChartFrame({
+  id,
   title,
   description,
   methodologyHref = "/metodik",
@@ -21,7 +23,10 @@ export function ChartFrame({
   children,
 }: ChartFrameProps) {
   return (
-    <section className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]">
+    <section
+      id={id}
+      className={`overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]${id ? " scroll-mt-28" : ""}`}
+    >
       <div className="border-b border-[var(--border)] bg-[var(--surface-muted)] px-5 py-4 sm:px-6">
         <h2 className="font-serif text-xl font-semibold text-[var(--ink)]">{title}</h2>
         <p className="mt-1 max-w-3xl text-sm leading-relaxed text-[var(--ink-muted)]">

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Source_Serif_4, IBM_Plex_Sans } from "next/font/google";
 import { PreviewBanner } from "@/components/PreviewBanner";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_SLOGAN, SITE_TITLE } from "@/lib/site-meta";
 import "./globals.css";
 
 const serif = Source_Serif_4({
@@ -29,16 +30,23 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Alarmindex — dagligt formspråksindex för svenska nyhetsrubriker",
-  description:
-    "Mäter hur rubriker konstrueras för känslomässig respons. Öppen metod, dagliga grafer, ingen bedömning av journalistisk kvalitet.",
+  title: {
+    default: SITE_TITLE,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
   ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
   openGraph: {
-    title: "Alarmindex",
-    description:
-      "Daglig mätning av alarmistiskt formspråk i svenska nyhetsrubriker och löpsedlar.",
+    title: SITE_NAME,
+    description: SITE_SLOGAN,
     locale: "sv_SE",
     type: "website",
+    siteName: SITE_NAME,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_SLOGAN,
   },
 };
 
