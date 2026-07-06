@@ -86,7 +86,9 @@ export function MovingAverageComparisonChart({
     if (embedded) {
       return (
         <div className="px-5 py-4 sm:px-6">
-          <h3 className="mb-3 text-sm font-medium text-[var(--ink-muted)]">Trendgraf</h3>
+          <h3 className="mb-3 text-sm font-medium text-[var(--ink-muted)]">
+            Glidande medelvärde över tid
+          </h3>
           {empty}
         </div>
       );
@@ -155,9 +157,9 @@ export function MovingAverageComparisonChart({
     return (
       <div className="space-y-4 px-5 py-4 sm:px-6 sm:py-5">
         <div>
-          <h3 className="text-sm font-medium text-[var(--ink)]">Trendgraf</h3>
+          <h3 className="text-sm font-medium text-[var(--ink)]">Glidande medelvärde över tid</h3>
           <p className="mt-1 text-xs text-[var(--ink-subtle)]">
-            {maPeriodDescription(window)} · senast {dateLabel}
+            Glidande medelvärde · {maPeriodDescription(window).toLowerCase()} · senast {dateLabel}
           </p>
         </div>
         {legend}

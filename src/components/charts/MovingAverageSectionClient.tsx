@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   getMaPeriod,
-  maPeriodDescription,
+  maSnapshotLabel,
   MA_PERIODS,
   type MaPeriodDataset,
   type MaPeriodId,
@@ -33,11 +33,12 @@ export function MovingAverageSectionClient({
     <section className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]">
       <div className="border-b border-[var(--border)] bg-[var(--surface-muted)] px-5 py-4 sm:px-6">
         <h2 className="font-serif text-xl font-semibold text-[var(--ink)]">
-          Glidande medelvärden
+          Medelvärden
         </h2>
         <p className="mt-1 max-w-3xl text-sm leading-relaxed text-[var(--ink-muted)]">
-          {maPeriodDescription(period.window)}. Tabellen sammanfattar nivån; trendgrafen visar hur
-          medelvärdet utvecklats. Förändring jämför med föregående fönster av samma längd.
+          Tabellen visar {maSnapshotLabel(period.window).toLowerCase()} per tidning — snittet av
+          dagspoäng idag. Grafen nedan visar hur det glidande medelvärdet utvecklats över tid.
+          Förändring jämför med föregående fönster av samma längd.
         </p>
 
         <div
@@ -64,7 +65,7 @@ export function MovingAverageSectionClient({
         </div>
       </div>
 
-      <MovingAverageTable rows={summaries} highlightSlug={highlightSlug} />
+      <MovingAverageTable rows={summaries} window={period.window} highlightSlug={highlightSlug} />
 
       {showComparisonChart ? (
         <div className="border-t border-[var(--border)] bg-[var(--surface-muted)]/40">

@@ -211,6 +211,11 @@ export function maPeriodDescription(window: number): string {
   return `Senaste ${window} publicerade dagarna`;
 }
 
+/** Etikett för tabell/KPI: ett ögonblicksvärde, inte en tidsserie. */
+export function maSnapshotLabel(window: number): string {
+  return `Snitt, ${window} dagar`;
+}
+
 export type MaPeriodDataset = {
   summaries: MovingAverageSummary[];
   comparison: { data: ComparisonSeriesPoint[]; slugs: Array<{ slug: string; name: string }> };

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { NewspaperSwatch } from "@/components/NewspaperSwatch";
 import {
   getMaPeriod,
-  maPeriodDescription,
+  maSnapshotLabel,
   MA_PERIODS,
   type MaPeriodId,
   type SingleMaPeriodDataset,
@@ -35,16 +35,19 @@ export function NewspaperMovingAverageSectionClient({
   const { summary, series } = periodData[periodId];
   const color = newspaperColor(slug);
   const showChange = summary.change != null;
+  const showUnderlag = summary.observationCount < period.window;
+  const kpiCols =
+    1 + (showChange ? 1 : 0) + (showUnderlag ? 1 : 0);
 
   return (
     <section className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]">
       <div className="border-b border-[var(--border)] bg-[var(--surface-muted)] px-5 py-4 sm:px-6">
         <h2 className="font-serif text-xl font-semibold text-[var(--ink)]">
-          Glidande medelvärden
+          Medelvärden
         </h2>
         <p className="mt-1 max-w-3xl text-sm leading-relaxed text-[var(--ink-muted)]">
-          {maPeriodDescription(period.window)} för {name}. Trendgrafen visar hur medelvärdet
-          utvecklats.
+          {maSnapshotLabel(period.window)} för {name} — snittet av dagspoäng idag. Grafen nedan
+          visar hur det glidande medelvärdet utvecklats över tid.
           {showChange
             ? " Förändring jämför med föregående fönster av samma längd."
             : null}
@@ -74,10 +77,18 @@ export function NewspaperMovingAverageSectionClient({
         </div>
       </div>
 
-      <div className="grid gap-4 border-b border-[var(--border)] p-5 sm:grid-cols-3 sm:px-6">
+      <div
+        className={`grid gap-4 border-b border-[var(--border)] p-5 sm:px-6 ${
+          kpiCols === 1
+            ? "sm:grid-cols-1"
+            : kpiCols === 2
+              ? "sm:grid-cols-2"
+              : "sm:grid-cols-3"
+        }`}
+      >
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-[var(--ink-subtle)]">
-            Medelvärde
+            {maSnapshotLabel(period.window)}
           </p>
           <div className="mt-2 flex items-center gap-2">
             <NewspaperSwatch slug={slug} size="md" />
@@ -108,18 +119,24 @@ export function NewspaperMovingAverageSectionClient({
           </div>
         ) : null}
 
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-[var(--ink-subtle)]">
-            Dagar i snitt
-          </p>
-          <p className="mt-2 text-3xl font-semibold tabular-nums text-[var(--ink)]">
-            {summary.observationCount}
-          </p>
-        </div>
+        {showUnderlag ? (
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wide text-[var(--ink-subtle)]">
+              Underlag
+            </p>
+            <p className="mt-2 text-3xl font-semibold tabular-nums text-[var(--ink)]">
+              {summary.observationCount}{" "}
+              <span className="text-lg font-medium text-[var(--ink-muted)]">
+                av {period.window}
+              </span>
+            </p>
+            <p className="mt-1 text-xs text-[var(--ink-subtle)]">dagar med data</p>
+          </div>
+        ) : null}
       </div>
 
       <div className="space-y-3 bg-[var(--surface-muted)]/40 px-5 py-5 sm:px-6">
-        <p className="text-sm font-medium text-[var(--ink)]">Trend</p>
+        <p className="text-sm font-medium text-[var(--ink)]">Glidande medelvärde över tid</p>
         <p className="text-xs text-[var(--ink-subtle)]">
           Glidande medelvärde · {period.label.toLowerCase()} · senast {dateLabel}
         </p>

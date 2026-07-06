@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { NewspaperSwatch } from "@/components/NewspaperSwatch";
-import type { MovingAverageSummary } from "@/lib/chart-data";
+import { maSnapshotLabel, type MovingAverageSummary } from "@/lib/chart-data";
 import { newspaperColor, newspaperColorSoft } from "@/lib/newspaper-colors";
 
 function formatChange(change: number | null): string {
@@ -10,10 +10,18 @@ function formatChange(change: number | null): string {
 
 type MovingAverageTableProps = {
   rows: MovingAverageSummary[];
+  window: number;
   highlightSlug?: string;
 };
 
-export function MovingAverageTable({ rows, highlightSlug }: MovingAverageTableProps) {
+function tableGridClass(showChange: boolean, showUnderlag: boolean): string {
+  if (showChange && showUnderlag) return "sm:grid-cols-[1fr_auto_auto_auto]";
+  if (showChange) return "sm:grid-cols-[1fr_auto_auto]";
+  if (showUnderlag) return "sm:grid-cols-[1fr_auto_auto]";
+  return "sm:grid-cols-[1fr_auto]";
+}
+
+export function MovingAverageTable({ rows, window, highlightSlug }: MovingAverageTableProps) {
   if (rows.length === 0) {
     return (
       <p className="px-5 py-8 text-center text-sm text-[var(--ink-muted)] sm:px-6">
@@ -23,20 +31,19 @@ export function MovingAverageTable({ rows, highlightSlug }: MovingAverageTablePr
   }
 
   const showChangeColumn = rows.some((row) => row.change != null);
+  const showUnderlagColumn = rows.some((row) => row.observationCount < window);
+  const gridClass = tableGridClass(showChangeColumn, showUnderlagColumn);
+  const snapshotLabel = maSnapshotLabel(window);
 
   return (
     <div>
       <div
-        className={`hidden border-b border-[var(--border)] bg-[var(--surface-muted)] px-6 py-2.5 text-xs font-medium text-[var(--ink-subtle)] sm:grid sm:gap-6 ${
-          showChangeColumn
-            ? "sm:grid-cols-[1fr_auto_auto_auto]"
-            : "sm:grid-cols-[1fr_auto_auto]"
-        }`}
+        className={`hidden border-b border-[var(--border)] bg-[var(--surface-muted)] px-6 py-2.5 text-xs font-medium text-[var(--ink-subtle)] sm:grid sm:gap-6 ${gridClass}`}
       >
         <span>Tidning</span>
-        <span className="text-right">Medelvärde</span>
+        <span className="text-right">{snapshotLabel}</span>
         {showChangeColumn ? <span className="text-right">Förändring</span> : null}
-        <span className="text-right">Dagar i snitt</span>
+        {showUnderlagColumn ? <span className="text-right">Underlag</span> : null}
       </div>
       <div className="divide-y divide-[var(--border)]">
         {rows.map((row, index) => {
@@ -48,11 +55,7 @@ export function MovingAverageTable({ rows, highlightSlug }: MovingAverageTablePr
           return (
             <div
               key={row.slug}
-              className={`grid gap-3 px-5 py-4 transition sm:items-center sm:gap-6 sm:px-6 ${
-                showChangeColumn
-                  ? "sm:grid-cols-[1fr_auto_auto_auto]"
-                  : "sm:grid-cols-[1fr_auto_auto]"
-              } ${dimmed ? "opacity-50" : ""} ${highlighted ? "bg-[var(--surface-muted)]" : ""}`}
+              className={`grid gap-3 px-5 py-4 transition sm:items-center sm:gap-6 sm:px-6 ${gridClass} ${dimmed ? "opacity-50" : ""} ${highlighted ? "bg-[var(--surface-muted)]" : ""}`}
               style={{ boxShadow: highlighted ? `inset 4px 0 0 ${color}` : undefined }}
             >
               <div className="flex min-w-0 items-center gap-3">
@@ -72,7 +75,7 @@ export function MovingAverageTable({ rows, highlightSlug }: MovingAverageTablePr
               </div>
 
               <div className="sm:text-right">
-                <p className="text-xs text-[var(--ink-subtle)] sm:hidden">Medelvärde</p>
+                <p className="text-xs text-[var(--ink-subtle)] sm:hidden">{snapshotLabel}</p>
                 <p className="text-xl font-semibold tabular-nums" style={{ color }}>
                   {row.average ?? "—"}
                 </p>
@@ -97,10 +100,16 @@ export function MovingAverageTable({ rows, highlightSlug }: MovingAverageTablePr
                 </div>
               ) : null}
 
-              <div className="sm:text-right">
-                <p className="text-xs text-[var(--ink-subtle)] sm:hidden">Dagar i snitt</p>
-                <p className="text-sm tabular-nums text-[var(--ink-muted)]">{row.observationCount}</p>
-              </div>
+              {showUnderlagColumn ? (
+                <div className="sm:text-right">
+                  <p className="text-xs text-[var(--ink-subtle)] sm:hidden">Underlag</p>
+                  <p className="text-sm tabular-nums text-[var(--ink-muted)]">
+                    {row.observationCount < window
+                      ? `${row.observationCount} av ${window} dagar`
+                      : null}
+                  </p>
+                </div>
+              ) : null}
             </div>
           );
         })}
