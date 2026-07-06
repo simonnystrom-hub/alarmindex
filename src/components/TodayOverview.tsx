@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { AlarmIndexScale } from "./AlarmIndexScale";
+import { DayEditionRankingList } from "./DayEditionRankingList";
 import { NewspaperSwatch } from "./NewspaperSwatch";
-import { ScoreBar, ScoreBadge } from "./ScoreBar";
+import { ScoreBadge } from "./ScoreBar";
 import { describeAlarmIndex, getAlarmLevel } from "@/lib/alarm-levels";
-import { newspaperColor, newspaperColorSoft } from "@/lib/newspaper-colors";
 import type { DailyEdition } from "@/lib/sanity/types";
 
 type TodayOverviewProps = {
@@ -148,11 +148,8 @@ export function TodayOverview({ editions, date }: TodayOverviewProps) {
         </div>
       </details>
 
-      <section
-        className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]"
-        aria-labelledby="alla-tidningar-heading"
-      >
-        <header className="px-5 py-4 sm:px-6">
+      <section aria-labelledby="alla-tidningar-heading">
+        <header className="mb-4">
           <h3
             id="alla-tidningar-heading"
             className="font-serif text-lg font-semibold text-[var(--ink)]"
@@ -164,72 +161,11 @@ export function TodayOverview({ editions, date }: TodayOverviewProps) {
           </p>
         </header>
 
-        <div className="border-t border-[var(--border)] px-5 py-5 sm:px-6">
-          <ol className="grid gap-3">
-            {ranked.map((edition, index) => (
-              <li
-                key={edition._id}
-                className="rounded-2xl border border-[var(--border)] bg-[var(--surface-muted)] p-4 sm:p-5"
-              >
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-start gap-3">
-                      <span
-                        className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold tabular-nums"
-                        style={{
-                          backgroundColor: newspaperColorSoft(edition.newspaper.slug),
-                          color: newspaperColor(edition.newspaper.slug),
-                        }}
-                      >
-                        {index + 1}
-                      </span>
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2.5">
-                          <NewspaperSwatch slug={edition.newspaper.slug} size="md" />
-                          <Link
-                            href={`/tidning/${edition.newspaper.slug}`}
-                            className="text-lg font-semibold text-[var(--ink)] hover:text-[var(--accent)]"
-                          >
-                            {edition.newspaper.name}
-                          </Link>
-                          <ScoreBadge score={edition.dailyScore ?? 0} />
-                        </div>
-                        {edition.drivingHeadline?.text ? (
-                          <p className="mt-2 text-sm leading-relaxed text-[var(--ink-muted)]">
-                            Drivande rubrik: &ldquo;{edition.drivingHeadline.text}&rdquo;
-                          </p>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-full sm:w-44">
-                    <ScoreBar
-                      score={edition.dailyScore ?? 0}
-                      accentColor={newspaperColor(edition.newspaper.slug)}
-                    />
-                  </div>
-                </div>
-                <div className="mt-4 flex gap-4 text-sm">
-                  <Link
-                    href={`/dag/${date}/${edition.newspaper.slug}`}
-                    className="font-medium text-[var(--accent)] hover:underline"
-                  >
-                    Alla rubriker →
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ol>
-
-          <p className="mt-4 text-right text-sm">
-            <Link
-              href={`/dag/${date}`}
-              className="font-medium text-[var(--accent)] hover:underline"
-            >
-              Visa alla rubriker för {date} →
-            </Link>
-          </p>
-        </div>
+        <DayEditionRankingList
+          ranked={ranked}
+          date={date}
+          footerLink={{ href: "/dag", label: "Visa alla dagar →" }}
+        />
       </section>
     </section>
   );

@@ -9,7 +9,7 @@ import { TodayOverview } from "@/components/TodayOverview";
 import { PageHeader } from "@/components/PageHeader";
 import { toComparisonSeries } from "@/lib/chart-data";
 import {
-  getDailyEditions,
+  getDailyEditionsWithHeadlines,
   getIndexHistory,
   getLatestPublishedDate,
 } from "@/lib/sanity/queries";
@@ -30,7 +30,7 @@ export default async function HomePage() {
   const date =
     (await getLatestPublishedDate()) ?? new Date().toISOString().slice(0, 10);
   const [editions, history] = await Promise.all([
-    getDailyEditions(date),
+    getDailyEditionsWithHeadlines(date),
     getIndexHistory(400),
   ]);
   const { data: comparisonData, slugs: newspapers } = toComparisonSeries(history);
@@ -45,12 +45,12 @@ export default async function HomePage() {
           >
             Så funkar metoden
           </Link>
-          <Link
-            href={`/dag/${date}`}
+          <a
+            href="#dagens-lage"
             className="inline-flex min-h-11 items-center rounded-full bg-[var(--ink)] px-4 py-2 text-[var(--surface)] hover:opacity-90"
           >
             Se dagens index
-          </Link>
+          </a>
         </div>
       </PageHeader>
 

@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { AlarmIndexScale } from "@/components/AlarmIndexScale";
-import { DayEditionHeadlineList } from "@/components/DayEditionHeadlineList";
+import { DayEditionRankingList, NewspaperDayLink } from "@/components/DayEditionRankingList";
 import { NewspaperSwatch } from "@/components/NewspaperSwatch";
 import { PageHeader } from "@/components/PageHeader";
-import { ScoreBar, ScoreBadge } from "@/components/ScoreBar";
+import { ScoreBadge } from "@/components/ScoreBar";
 import { describeAlarmIndex, getAlarmLevel } from "@/lib/alarm-levels";
-import { newspaperColor, newspaperColorSoft } from "@/lib/newspaper-colors";
 import { getDailyEditions, getDailyEditionsWithHeadlines } from "@/lib/sanity/queries";
 
 export const revalidate = 3600;
@@ -34,30 +32,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `Index ${date} — Alarmindex`,
     description: `${editions.length} tidningar · snitt ${average} (${level.label}). ${describeAlarmIndex(average)}`,
   };
-}
-
-function NewspaperDayLink({
-  date,
-  slug,
-  name,
-  className = "text-lg font-semibold hover:opacity-80",
-}: {
-  date: string;
-  slug: string;
-  name: string;
-  className?: string;
-}) {
-  const color = newspaperColor(slug);
-
-  return (
-    <Link
-      href={`/dag/${date}/${slug}`}
-      className={className}
-      style={{ color }}
-    >
-      {name}
-    </Link>
-  );
 }
 
 export default async function DayPage({ params }: PageProps) {
@@ -181,56 +155,7 @@ export default async function DayPage({ params }: PageProps) {
             </details>
           ) : null}
 
-          <div className="divide-y divide-[var(--border)] overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]">
-            {ranked.map((row, index) => (
-              <div key={row.newspaper._id} className="p-4 sm:p-5">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-start gap-3">
-                      <span
-                        className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold tabular-nums"
-                        style={{
-                          backgroundColor: newspaperColorSoft(row.newspaper.slug),
-                          color: newspaperColor(row.newspaper.slug),
-                        }}
-                      >
-                        {index + 1}
-                      </span>
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2.5">
-                          <NewspaperSwatch slug={row.newspaper.slug} size="md" />
-                          <NewspaperDayLink
-                            date={date}
-                            slug={row.newspaper.slug}
-                            name={row.newspaper.name}
-                          />
-                          <ScoreBadge score={row.dailyScore ?? 0} />
-                        </div>
-                        {row.headlines && row.headlines.length > 0 ? (
-                          <DayEditionHeadlineList
-                            slug={row.newspaper.slug}
-                            date={date}
-                            headlines={row.headlines}
-                            drivingHeadlineId={row.drivingHeadline?._id}
-                          />
-                        ) : row.drivingHeadline?.text ? (
-                          <p className="mt-1 text-sm text-[var(--ink-muted)]">
-                            {row.drivingHeadline.text}
-                          </p>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-full sm:w-48">
-                    <ScoreBar
-                      score={row.dailyScore ?? 0}
-                      accentColor={newspaperColor(row.newspaper.slug)}
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <DayEditionRankingList ranked={ranked} date={date} />
         </>
       )}
     </div>
