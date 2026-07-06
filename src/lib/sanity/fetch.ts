@@ -1,6 +1,6 @@
 import {createClient} from '@sanity/client'
 import {draftMode} from 'next/headers'
-import {apiVersion, dataset, projectId, sanityClient} from './client'
+import {apiVersion, dataset, getSanityClient as getPublishedSanityClient, projectId} from './client'
 
 export function isSanityConfigured(): boolean {
   return Boolean(projectId && projectId !== 'your-project-id')
@@ -15,7 +15,7 @@ export async function isPreviewMode(): Promise<boolean> {
   }
 }
 
-async function getSanityClient() {
+async function resolveSanityClient() {
   const preview = await isPreviewMode()
 
   if (preview && process.env.SANITY_API_READ_TOKEN) {
@@ -29,7 +29,7 @@ async function getSanityClient() {
     })
   }
 
-  return sanityClient
+  return getPublishedSanityClient()
 }
 
 export async function safeFetch<T>(
@@ -41,7 +41,7 @@ export async function safeFetch<T>(
   }
 
   const preview = await isPreviewMode()
-  const client = await getSanityClient()
+  const client = await resolveSanityClient()
 
   try {
     return await client.fetch<T>(query, {...params, preview})
@@ -58,7 +58,7 @@ export async function safeFetchOne<T>(
     return null
   }
 
-  const client = await getSanityClient()
+  const client = await resolveSanityClient()
 
   try {
     return await client.fetch<T | null>(query, {...params, preview: await isPreviewMode()})
