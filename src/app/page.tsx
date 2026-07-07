@@ -17,7 +17,7 @@ import {
 } from "@/lib/sanity/queries";
 import { buildPageMetadata } from "@/lib/site-settings";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
