@@ -35,9 +35,7 @@ export function NewspaperMovingAverageSectionClient({
   const { summary, series } = periodData[periodId];
   const color = newspaperColor(slug);
   const showChange = summary.change != null;
-  const showUnderlag = summary.observationCount < period.window;
-  const kpiCols =
-    1 + (showChange ? 1 : 0) + (showUnderlag ? 1 : 0);
+  const kpiCols = 1 + (showChange ? 1 : 0) + 1;
 
   return (
     <section className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]">
@@ -119,20 +117,18 @@ export function NewspaperMovingAverageSectionClient({
           </div>
         ) : null}
 
-        {showUnderlag ? (
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-[var(--ink-subtle)]">
-              Underlag
-            </p>
-            <p className="mt-2 text-3xl font-semibold tabular-nums text-[var(--ink)]">
-              {summary.observationCount}{" "}
-              <span className="text-lg font-medium text-[var(--ink-muted)]">
-                av {period.window}
-              </span>
-            </p>
-            <p className="mt-1 text-xs text-[var(--ink-subtle)]">dagar med data</p>
-          </div>
-        ) : null}
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-[var(--ink-subtle)]">
+            Underlag
+          </p>
+          <p className="mt-2 text-3xl font-semibold tabular-nums text-[var(--ink)]">
+            {summary.observationCount}{" "}
+            <span className="text-lg font-medium text-[var(--ink-muted)]">
+              av {period.window}
+            </span>
+          </p>
+          <p className="mt-1 text-xs text-[var(--ink-subtle)]">dagar med data</p>
+        </div>
       </div>
 
       <div className="space-y-3 bg-[var(--surface-muted)]/40 px-5 py-5 sm:px-6">

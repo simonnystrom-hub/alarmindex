@@ -31,8 +31,7 @@ export function MovingAverageTable({ rows, window, highlightSlug }: MovingAverag
   }
 
   const showChangeColumn = rows.some((row) => row.change != null);
-  const showUnderlagColumn = rows.some((row) => row.observationCount < window);
-  const gridClass = tableGridClass(showChangeColumn, showUnderlagColumn);
+  const gridClass = tableGridClass(showChangeColumn, true);
   const snapshotLabel = maSnapshotLabel(window);
 
   return (
@@ -43,7 +42,7 @@ export function MovingAverageTable({ rows, window, highlightSlug }: MovingAverag
         <span>Tidning</span>
         <span className="text-right">{snapshotLabel}</span>
         {showChangeColumn ? <span className="text-right">Förändring</span> : null}
-        {showUnderlagColumn ? <span className="text-right">Underlag</span> : null}
+        <span className="text-right">Underlag</span>
       </div>
       <div className="divide-y divide-[var(--border)]">
         {rows.map((row, index) => {
@@ -100,16 +99,12 @@ export function MovingAverageTable({ rows, window, highlightSlug }: MovingAverag
                 </div>
               ) : null}
 
-              {showUnderlagColumn ? (
-                <div className="sm:text-right">
-                  <p className="text-xs text-[var(--ink-subtle)] sm:hidden">Underlag</p>
-                  <p className="text-sm tabular-nums text-[var(--ink-muted)]">
-                    {row.observationCount < window
-                      ? `${row.observationCount} av ${window} dagar`
-                      : null}
-                  </p>
-                </div>
-              ) : null}
+              <div className="sm:text-right">
+                <p className="text-xs text-[var(--ink-subtle)] sm:hidden">Underlag</p>
+                <p className="text-sm tabular-nums text-[var(--ink-muted)]">
+                  {row.observationCount} av {window} dagar
+                </p>
+              </div>
             </div>
           );
         })}
