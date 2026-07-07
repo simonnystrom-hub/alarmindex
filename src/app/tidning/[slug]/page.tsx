@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChartSkeleton } from "@/components/charts/ChartSkeleton";
 import { NewspaperMovingAverageSection } from "@/components/charts/NewspaperMovingAverageSection";
+import { VisitorAssessmentSection } from "@/components/VisitorAssessmentSection";
 import { PageHeader } from "@/components/PageHeader";
 import { ScoreBar } from "@/components/ScoreBar";
 import { toSingleSeries } from "@/lib/chart-data";
@@ -67,6 +68,8 @@ export default async function NewspaperPage({ params }: PageProps) {
         history={history}
         dateLabel={latestDate}
       />
+
+      <VisitorAssessmentSection slug={slug} name={newspaper.name} />
 
       {history.length === 0 ? (
         <p className="text-[var(--ink-muted)]">Ingen publicerad historik ännu.</p>

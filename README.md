@@ -2,6 +2,8 @@
 
 Dagligt formspråksindex för svenska nyhetsrubriker. Next.js-frontend som läser publicerad data från Sanity.
 
+**Utökad guide:** [docs/PROJEKTGUIDE.md](docs/PROJEKTGUIDE.md) — arkitektur, terminalkommandon, felsökning och hur delarna kommunicerar.
+
 ## Kom igång
 
 1. Skapa Sanity-projekt och kopiera project ID till `.env` (se `.env.example`)
