@@ -4,6 +4,7 @@ import { DayEditionRankingList } from "./DayEditionRankingList";
 import { NewspaperSwatch } from "./NewspaperSwatch";
 import { ScoreBadge } from "./ScoreBar";
 import { describeAlarmIndex, getAlarmLevel } from "@/lib/alarm-levels";
+import { OFFICIAL_DAILY_SCORE_LABEL } from "@/lib/score-labels";
 import type { DailyEdition } from "@/lib/sanity/types";
 
 type TodayOverviewProps = {
@@ -72,7 +73,7 @@ export function TodayOverview({ editions, date }: TodayOverviewProps) {
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <li className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-[var(--shadow-card)]">
           <p className="text-xs font-medium uppercase tracking-wide text-[var(--ink-subtle)]">
-            Snitt idag
+            Snitt idag · {OFFICIAL_DAILY_SCORE_LABEL.toLowerCase()}
           </p>
           <p
             className="mt-2 text-4xl font-semibold tabular-nums"
@@ -157,7 +158,7 @@ export function TodayOverview({ editions, date }: TodayOverviewProps) {
             Alla tidningar idag
           </h3>
           <p className="mt-0.5 text-sm text-[var(--ink-muted)]">
-            Sorterat efter alarmindex · {editions.length} tidningar
+            {OFFICIAL_DAILY_SCORE_LABEL} · sorterat efter poäng · {editions.length} tidningar
           </p>
         </header>
 

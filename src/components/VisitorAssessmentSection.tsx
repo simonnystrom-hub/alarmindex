@@ -4,6 +4,7 @@ import {
   getVisitorAssessmentAverageForNewspaper,
   getVisitorAssessmentsForNewspaper,
 } from '@/lib/sanity/assessment-queries'
+import { VISITOR_ASSESSMENT_AVERAGE_LABEL, VISITOR_ASSESSMENT_LABEL } from '@/lib/score-labels'
 import { newspaperColor } from '@/lib/newspaper-colors'
 
 type VisitorAssessmentSectionProps = {
@@ -22,10 +23,12 @@ export async function VisitorAssessmentSection({ slug, name }: VisitorAssessment
   return (
     <section className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]">
       <div className="border-b border-[var(--border)] bg-[var(--surface-muted)] px-5 py-4 sm:px-6">
-        <h2 className="font-serif text-xl font-semibold text-[var(--ink)]">Bedöm en artikel</h2>
+        <h2 className="font-serif text-xl font-semibold text-[var(--ink)]">
+          {VISITOR_ASSESSMENT_LABEL}
+        </h2>
         <p className="mt-1 max-w-3xl text-sm leading-relaxed text-[var(--ink-muted)]">
-          Klistra in en artikel-URL från {name}. Vi analyserar rubriken med samma metod som
-          dagliga indexet och skickar resultatet till din e-post.
+          Klistra in en artikel-URL från {name}. Vi analyserar rubriken med samma metod som det
+          officiella dagliga indexet och skickar resultatet till din e-post.
         </p>
       </div>
 
@@ -36,7 +39,7 @@ export async function VisitorAssessmentSection({ slug, name }: VisitorAssessment
           {average ? (
             <div className="rounded-xl bg-[var(--surface-muted)] p-4">
               <p className="text-xs font-medium uppercase tracking-wide text-[var(--ink-subtle)]">
-                Snitt besökarbedömningar
+                {VISITOR_ASSESSMENT_AVERAGE_LABEL}
               </p>
               <p className="mt-2 text-3xl font-semibold tabular-nums" style={{ color }}>
                 {average.average}
@@ -50,7 +53,7 @@ export async function VisitorAssessmentSection({ slug, name }: VisitorAssessment
 
           {recent.length > 0 ? (
             <div>
-              <h3 className="text-sm font-medium text-[var(--ink)]">Senaste bedömningar</h3>
+              <h3 className="text-sm font-medium text-[var(--ink)]">Senaste besökarbedömningar</h3>
               <ul className="mt-3 space-y-2">
                 {recent.map((item) => (
                   <li key={item.shortId}>
@@ -69,12 +72,17 @@ export async function VisitorAssessmentSection({ slug, name }: VisitorAssessment
                           </p>
                         </div>
                         {item.displayScore != null ? (
-                          <span
-                            className="shrink-0 text-sm font-semibold tabular-nums"
-                            style={{ color }}
-                          >
-                            {item.displayScore}
-                          </span>
+                          <div className="shrink-0 text-right">
+                            <p className="text-[0.65rem] uppercase tracking-wide text-[var(--ink-subtle)]">
+                              {VISITOR_ASSESSMENT_LABEL}
+                            </p>
+                            <span
+                              className="text-sm font-semibold tabular-nums"
+                              style={{ color }}
+                            >
+                              {item.displayScore}
+                            </span>
+                          </div>
                         ) : null}
                       </div>
                     </Link>

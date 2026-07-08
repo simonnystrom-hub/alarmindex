@@ -3,6 +3,7 @@ import { DayEditionHeadlineList } from "@/components/DayEditionHeadlineList";
 import { NewspaperSwatch } from "@/components/NewspaperSwatch";
 import { ScoreBar, ScoreBadge } from "@/components/ScoreBar";
 import { newspaperColor, newspaperColorSoft } from "@/lib/newspaper-colors";
+import { OFFICIAL_DAILY_SCORE_LABEL } from "@/lib/score-labels";
 import type { DailyEdition } from "@/lib/sanity/types";
 
 export function NewspaperDayLink({
@@ -80,6 +81,7 @@ export function DayEditionRankingList({ ranked, date, footerLink }: DayEditionRa
                 <ScoreBar
                   score={row.dailyScore ?? 0}
                   accentColor={newspaperColor(row.newspaper.slug)}
+                  label={OFFICIAL_DAILY_SCORE_LABEL}
                 />
               </div>
             </div>

@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { ScoreBar } from "@/components/ScoreBar";
 import { SnapshotScreenshots } from "@/components/SnapshotScreenshots";
 import { EMOTION_LABELS, type EmotionPrimary } from "@/lib/scoring";
+import { OFFICIAL_DAILY_SCORE_LABEL } from "@/lib/score-labels";
 import { getSnapshotForDate } from "@/lib/sanity/queries";
 
 type PageProps = {
@@ -45,7 +46,7 @@ export default async function DayNewspaperPage({ params }: PageProps) {
         description={`Alla rubriker och poäng för ${date}.`}
       >
         <div className="max-w-xs pt-2">
-          <ScoreBar score={snapshot.dailyScore ?? 0} label="Dagspoäng" />
+          <ScoreBar score={snapshot.dailyScore ?? 0} label={OFFICIAL_DAILY_SCORE_LABEL} />
         </div>
       </PageHeader>
 

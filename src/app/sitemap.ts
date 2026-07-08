@@ -28,11 +28,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const newspaperRoutes: MetadataRoute.Sitemap = newspapers.map((paper) => ({
-    url: `${base}/tidning/${paper.slug}`,
-    changeFrequency: "daily",
-    priority: 0.75,
-  }));
+  const newspaperRoutes: MetadataRoute.Sitemap = newspapers.flatMap((paper) => [
+    {
+      url: `${base}/tidning/${paper.slug}`,
+      changeFrequency: "daily" as const,
+      priority: 0.75,
+    },
+    {
+      url: `${base}/tidning/${paper.slug}/bedom`,
+      changeFrequency: "weekly" as const,
+      priority: 0.65,
+    },
+  ]);
 
   const editionRoutes: MetadataRoute.Sitemap = editions
     .filter((row) => row.date && row.slug)

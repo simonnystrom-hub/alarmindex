@@ -1,6 +1,7 @@
 import { ScoreBar } from '@/components/ScoreBar'
 import { EMOTION_LABELS, type EmotionPrimary } from '@/lib/scoring'
 import type { VisitorAssessment } from '@/lib/sanity/assessment-queries'
+import { VISITOR_ASSESSMENT_LABEL } from '@/lib/score-labels'
 import { newspaperColor } from '@/lib/newspaper-colors'
 
 type AssessmentDetailProps = {
@@ -36,7 +37,7 @@ export function AssessmentDetail({ assessment }: AssessmentDetailProps) {
     <div className="space-y-6">
       <article className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-card)]">
         <p className="inline-flex rounded-full bg-[var(--surface-muted)] px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-[var(--ink-subtle)]">
-          Besökarbedömning
+          {VISITOR_ASSESSMENT_LABEL}
         </p>
         <h2 className="mt-3 text-2xl font-semibold text-[var(--ink)]">{assessment.headlineText}</h2>
         {assessment.subheading ? (
@@ -46,7 +47,7 @@ export function AssessmentDetail({ assessment }: AssessmentDetailProps) {
           {assessment.newspaper.name} · {new Date(assessment.submittedAt).toLocaleDateString('sv-SE')}
         </p>
         <div className="mt-5 max-w-sm">
-          <ScoreBar score={score} label="Alarmindex" accentColor={color} />
+          <ScoreBar score={score} label={VISITOR_ASSESSMENT_LABEL} accentColor={color} />
         </div>
       </article>
 

@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AssessArticleHomeSection } from "@/components/AssessArticleHomeSection";
 import { ChartSkeleton } from "@/components/charts/ChartSkeleton";
 import { MovingAverageSection } from "@/components/charts/MovingAverageSection";
 import { HomeIntro } from "@/components/HomeIntro";
@@ -78,6 +79,8 @@ export default async function HomePage() {
       />
 
       <MovingAverageSection history={history} dateLabel={date} showComparisonChart />
+
+      <AssessArticleHomeSection />
     </div>
   );
 }

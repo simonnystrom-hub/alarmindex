@@ -2,6 +2,7 @@ const sections = [
   { href: "#dagens-lage", label: "Dagens läge" },
   { href: "#jamforelse", label: "Jämförelse" },
   { href: "#medelvarden", label: "Medelvärden" },
+  { href: "#bedom-artikel", label: "Bedöm artikel" },
 ] as const;
 
 export function HomeSectionNav() {
