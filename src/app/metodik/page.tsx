@@ -133,7 +133,7 @@ export default function MethodologyPage() {
         </p>
       </section>
 
-      <section className="space-y-4">
+      <section id="besokarbedomningar" className="scroll-mt-8 space-y-4">
         <h2 className="font-serif text-2xl font-semibold text-[var(--ink)]">
           Besökarbedömningar (enskilda artiklar)
         </h2>

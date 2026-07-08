@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { ScoreBar } from '@/components/ScoreBar'
 import { EMOTION_LABELS, type EmotionPrimary } from '@/lib/scoring'
 import type { VisitorAssessment } from '@/lib/sanity/assessment-queries'
@@ -22,6 +23,21 @@ type DimensionFields = {
   emotionPrimary?: EmotionPrimary
   emotionIntensity?: number
   reasoning?: string
+}
+
+function combinedScoreNote(
+  headlineScore: number,
+  leadScore: number,
+  combinedScore: number,
+): string {
+  const diff = leadScore - headlineScore
+  if (diff > 0) {
+    return `Ingressen bedöms högre än rubriken (${leadScore} mot ${headlineScore}) och lyfter det sammanlagda poänget till ${combinedScore}.`
+  }
+  if (diff < 0) {
+    return `Rubriken bedöms högre än ingressen (${headlineScore} mot ${leadScore}). Det sammanlagda poänget blir ${combinedScore}.`
+  }
+  return `Rubrik och ingress bedöms lika (${headlineScore}). Det sammanlagda poänget blir ${combinedScore}.`
 }
 
 function DimensionGrid({ dimensions }: { dimensions: DimensionFields }) {
@@ -66,6 +82,9 @@ export function AssessmentDetail({ assessment }: AssessmentDetailProps) {
     assessment.headlineDisplayScore ?? assessment.displayScore ?? 0
   const leadScore = assessment.leadDisplayScore
   const hasLeadScore = leadScore != null && assessment.leadText
+  const showSubheading =
+    assessment.subheading &&
+    assessment.subheading.trim() !== assessment.leadText?.trim()
 
   if (assessment.status === 'pending' || assessment.status === 'processing') {
     return (
@@ -106,9 +125,18 @@ export function AssessmentDetail({ assessment }: AssessmentDetailProps) {
           />
         </div>
         {hasLeadScore ? (
-          <p className="mt-2 text-sm text-[var(--ink-muted)]">
-            Medel av rubrik ({headlineScore}) och ingress ({leadScore})
-          </p>
+          <div className="mt-3 space-y-2 text-sm text-[var(--ink-muted)]">
+            <p>
+              Sammanlagt poäng är medelvärdet av rubrik och ingress — båda bedöms med samma fem
+              dimensioner.
+            </p>
+            <p className="font-medium text-[var(--ink)]">
+              {combinedScoreNote(headlineScore, leadScore!, combinedScore)}
+            </p>
+            <p>
+              Rubrik {headlineScore}/100 · Ingress {leadScore}/100
+            </p>
+          </div>
         ) : assessment.leadMissing ? (
           <p className="mt-2 text-sm text-amber-800">
             Ingress kunde inte läsas — bedömningen gäller endast rubriken.
@@ -122,7 +150,7 @@ export function AssessmentDetail({ assessment }: AssessmentDetailProps) {
             {VISITOR_ASSESSMENT_HEADLINE_LABEL}
           </h2>
           <p className="text-xl font-semibold text-[var(--ink)]">{assessment.headlineText}</p>
-          {assessment.subheading ? (
+          {showSubheading ? (
             <p className="text-sm text-[var(--ink-muted)]">{assessment.subheading}</p>
           ) : null}
           <div className="max-w-sm">
@@ -158,6 +186,14 @@ export function AssessmentDetail({ assessment }: AssessmentDetailProps) {
               {VISITOR_ASSESSMENT_LEAD_LABEL}
             </h2>
             <p className="text-base leading-relaxed text-[var(--ink)]">{assessment.leadText}</p>
+            <p className="text-sm text-[var(--ink-muted)]">
+              Artikelns inledande stycke — bedöms separat eftersom det ofta förstärker eller
+              förtydligar rubrikens formspråk.{' '}
+              <Link href="/metodik#besokarbedomningar" className="text-[var(--accent)] hover:underline">
+                Läs mer i metodiken
+              </Link>
+              .
+            </p>
             <div className="max-w-sm">
               <ScoreBar
                 score={leadScore}
