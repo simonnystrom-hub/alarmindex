@@ -2,6 +2,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import type { EmotionPrimary } from '@/lib/scoring'
 import { PROMPT_VERSION } from './build-score'
 import { SCORING_SYSTEM_PROMPT, buildScoringUserPrompt } from './scoring-prompt'
+import { normalizeAiDimensionToInternal04 } from './dimension-scale'
 
 const FALLBACK_MODEL = 'claude-haiku-4-5-20251001'
 
@@ -25,10 +26,6 @@ type RawAiJson = {
   emotion_primary: EmotionPrimary
   emotion_intensity: number
   reasoning: string
-}
-
-function clamp04(value: number): number {
-  return Math.max(0, Math.min(4, Math.round(value)))
 }
 
 function parseAiJson(text: string): RawAiJson {
@@ -69,12 +66,14 @@ export async function scoreHeadlineWithAi(params: {
   const raw = parseAiJson(textBlock.text)
 
   return {
-    threatIntensity: clamp04(raw.threat_intensity),
-    personalFraming: clamp04(raw.personal_framing),
-    decontextualization: clamp04(raw.decontextualization),
-    formalIntensity: clamp04(raw.formal_intensity),
+    // AI graderar 1–10 (ny prompt). Vi normaliserar robust till intern 0–4
+    // så att befintliga 0–100-beräkningar fortsätter vara kompatibla.
+    threatIntensity: normalizeAiDimensionToInternal04(raw.threat_intensity),
+    personalFraming: normalizeAiDimensionToInternal04(raw.personal_framing),
+    decontextualization: normalizeAiDimensionToInternal04(raw.decontextualization),
+    formalIntensity: normalizeAiDimensionToInternal04(raw.formal_intensity),
     emotionPrimary: raw.emotion_primary,
-    emotionIntensity: clamp04(raw.emotion_intensity),
+    emotionIntensity: normalizeAiDimensionToInternal04(raw.emotion_intensity),
     reasoning: raw.reasoning,
     promptVersion: PROMPT_VERSION,
     modelVersion: model,

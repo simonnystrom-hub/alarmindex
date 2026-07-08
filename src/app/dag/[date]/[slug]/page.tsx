@@ -6,6 +6,7 @@ import { SnapshotScreenshots } from "@/components/SnapshotScreenshots";
 import { EMOTION_LABELS, type EmotionPrimary } from "@/lib/scoring";
 import { OFFICIAL_DAILY_SCORE_LABEL } from "@/lib/score-labels";
 import { getSnapshotForDate } from "@/lib/sanity/queries";
+import { internal04ToDisplay10 } from "@/lib/assessment/dimension-scale";
 
 type PageProps = {
   params: Promise<{ date: string; slug: string }>;
@@ -101,26 +102,46 @@ export default async function DayNewspaperPage({ params }: PageProps) {
                 <dl className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
                   <div>
                     <dt className="text-[var(--ink-subtle)]">Hotintensitet</dt>
-                    <dd>{headline.score.threatIntensity}/4</dd>
+                    <dd>
+                      {Math.round(
+                        internal04ToDisplay10(headline.score.threatIntensity),
+                      )}
+                      /10
+                    </dd>
                   </div>
                   <div>
                     <dt className="text-[var(--ink-subtle)]">Personifiering</dt>
-                    <dd>{headline.score.personalFraming}/4</dd>
+                    <dd>
+                      {Math.round(
+                        internal04ToDisplay10(headline.score.personalFraming),
+                      )}
+                      /10
+                    </dd>
                   </div>
                   <div>
                     <dt className="text-[var(--ink-subtle)]">Kontextlöshet</dt>
-                    <dd>{headline.score.decontextualization}/4</dd>
+                    <dd>
+                      {Math.round(
+                        internal04ToDisplay10(headline.score.decontextualization),
+                      )}
+                      /10
+                    </dd>
                   </div>
                   <div>
                     <dt className="text-[var(--ink-subtle)]">Formspråk</dt>
-                    <dd>{headline.score.formalIntensity}/4</dd>
+                    <dd>
+                      {Math.round(
+                        internal04ToDisplay10(headline.score.formalIntensity),
+                      )}
+                      /10
+                    </dd>
                   </div>
                   <div>
                     <dt className="text-[var(--ink-subtle)]">Känsla</dt>
                     <dd>
                       {EMOTION_LABELS[headline.score.emotionPrimary as EmotionPrimary] ??
                         headline.score.emotionPrimary}{" "}
-                      ({headline.score.emotionIntensity}/4)
+                      ({Math.round(internal04ToDisplay10(headline.score.emotionIntensity))}/10)
                     </dd>
                   </div>
                 </dl>

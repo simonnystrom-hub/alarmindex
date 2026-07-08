@@ -28,7 +28,7 @@ const dimensions = [
   },
   {
     name: "Känslotyp & intensitet",
-    text: "Primär känsla (rädsla, ila, sorg, avsky, neutral) och styrka 0–4.",
+    text: "Primär känsla (rädsla, ila, sorg, avsky, neutral) och styrka 1–10.",
   },
 ];
 
@@ -57,7 +57,9 @@ export default function MethodologyPage() {
       <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-card)]">
         <h2 className="font-serif text-xl font-semibold text-[var(--ink)]">Kortversion</h2>
         <ul className="mt-4 list-disc space-y-2 pl-5 text-[var(--ink-muted)]">
-          <li>Fem dimensioner, 0–4 poäng vardera → innehållspoäng 0–20 → visning 0–100.</li>
+          <li>
+            Fem dimensioner, 1–10 poäng vardera → mappas till 0–4 internt → innehållspoäng 0–20 → visning 0–100.
+          </li>
           <li>Exponeringsvikt (mobil, synlig utan scroll × 1,5) räknas i kod — inte av AI.</li>
           <li>
             Dagspoäng: <strong className="text-[var(--ink)]">70 % högsta rubrik + 30 % snitt</strong> av

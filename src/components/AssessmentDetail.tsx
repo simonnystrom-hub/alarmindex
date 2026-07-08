@@ -3,6 +3,7 @@ import { EMOTION_LABELS, type EmotionPrimary } from '@/lib/scoring'
 import type { VisitorAssessment } from '@/lib/sanity/assessment-queries'
 import { VISITOR_ASSESSMENT_LABEL } from '@/lib/score-labels'
 import { newspaperColor } from '@/lib/newspaper-colors'
+import { internal04ToDisplay10 } from '@/lib/assessment/dimension-scale'
 
 type AssessmentDetailProps = {
   assessment: VisitorAssessment
@@ -55,26 +56,36 @@ export function AssessmentDetail({ assessment }: AssessmentDetailProps) {
         <dl className="grid gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 text-sm sm:grid-cols-2">
           <div>
             <dt className="text-[var(--ink-subtle)]">Hotintensitet</dt>
-            <dd>{assessment.threatIntensity}/4</dd>
+            <dd>
+              {Math.round(internal04ToDisplay10(assessment.threatIntensity ?? 0))}/10
+            </dd>
           </div>
           <div>
             <dt className="text-[var(--ink-subtle)]">Personifiering</dt>
-            <dd>{assessment.personalFraming}/4</dd>
+            <dd>
+              {Math.round(internal04ToDisplay10(assessment.personalFraming ?? 0))}/10
+            </dd>
           </div>
           <div>
             <dt className="text-[var(--ink-subtle)]">Kontextlöshet</dt>
-            <dd>{assessment.decontextualization}/4</dd>
+            <dd>
+              {Math.round(
+                internal04ToDisplay10(assessment.decontextualization ?? 0),
+              )}/10
+            </dd>
           </div>
           <div>
             <dt className="text-[var(--ink-subtle)]">Formspråk</dt>
-            <dd>{assessment.formalIntensity}/4</dd>
+            <dd>
+              {Math.round(internal04ToDisplay10(assessment.formalIntensity ?? 0))}/10
+            </dd>
           </div>
           <div>
             <dt className="text-[var(--ink-subtle)]">Känsla</dt>
             <dd>
               {EMOTION_LABELS[assessment.emotionPrimary as EmotionPrimary] ??
                 assessment.emotionPrimary}{' '}
-              ({assessment.emotionIntensity}/4)
+              ({Math.round(internal04ToDisplay10(assessment.emotionIntensity ?? 0))}/10)
             </dd>
           </div>
         </dl>
