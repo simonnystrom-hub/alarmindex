@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
       shortId,
       status: 'pending',
       existing: false,
-      message: 'Vi analyserar rubriken och mailar dig när bedömningen är klar.',
+      message: 'Vi analyserar rubriken och ingressen och mailar dig när bedömningen är klar.',
     },
     { status: 202 },
   )

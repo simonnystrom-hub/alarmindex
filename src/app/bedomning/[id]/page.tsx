@@ -58,8 +58,8 @@ export default async function AssessmentPage({ params }: PageProps) {
         title={VISITOR_ASSESSMENT_LABEL}
         description={
           assessment.status === 'published' && assessment.headlineText
-            ? `«${assessment.headlineText}» — en enskild artikel bedömd med samma metod som det officiella dagliga indexet.`
-            : 'Bedömning av alarmistiskt formspråk i en artikelrubrik.'
+            ? `«${assessment.headlineText}» — rubrik och ingress bedömda med samma metod som det officiella dagliga indexet.`
+            : 'Bedömning av alarmistiskt formspråk i rubrik och ingress.'
         }
       />
 
@@ -75,7 +75,7 @@ export default async function AssessmentPage({ params }: PageProps) {
             <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
               <h2 className="text-sm font-medium text-[var(--ink)]">Källartikel</h2>
               <p className="mt-1 text-sm text-[var(--ink-muted)]">
-                Bedömningen gäller rubriken på den här artikeln hos{' '}
+                Bedömningen gäller rubriken och ingressen på den här artikeln hos{' '}
                 {assessment.newspaper.name}.
               </p>
               <a

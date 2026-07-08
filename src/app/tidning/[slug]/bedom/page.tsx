@@ -36,7 +36,7 @@ export default async function NewspaperAssessPage({ params }: PageProps) {
         backHref={`/tidning/${slug}`}
         backLabel={newspaper.name}
         title={`Bedöm en artikel`}
-        description={`Klistra in en artikel-URL från ${newspaper.name}. Vi analyserar rubriken med samma AI-metod som det officiella dagliga indexet — men för en enskild artikel du väljer.`}
+        description={`Klistra in en artikel-URL från ${newspaper.name}. Vi analyserar rubriken och ingressen med samma AI-metod som det officiella dagliga indexet — men för en enskild artikel du väljer.`}
       >
         <p className="max-w-2xl text-sm leading-relaxed text-[var(--ink-muted)]">
           Detta är en <strong className="font-medium text-[var(--ink)]">besökarbedömning</strong>,

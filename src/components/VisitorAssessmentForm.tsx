@@ -172,7 +172,7 @@ export function VisitorAssessmentForm({
         disabled={submitting || (Boolean(siteKey) && !turnstileToken)}
         className="rounded-xl bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {submitting ? 'Skickar…' : 'Bedöm rubrik'}
+        {submitting ? 'Skickar…' : 'Bedöm artikel'}
       </button>
     </form>
   )

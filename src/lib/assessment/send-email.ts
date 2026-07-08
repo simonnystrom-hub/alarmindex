@@ -39,14 +39,24 @@ export async function sendAssessmentEmail(params: SendEmailParams): Promise<void
 export function buildSuccessEmailHtml(params: {
   headline: string
   score: number
+  headlineScore: number
+  leadScore?: number
+  leadMissing?: boolean
   newspaperName: string
   assessmentUrl: string
 }): string {
+  const scoreBreakdown =
+    params.leadScore != null
+      ? `Sammanlagt: <strong>${params.score}/100</strong> (rubrik ${params.headlineScore}, ingress ${params.leadScore})`
+      : params.leadMissing
+        ? `Poäng: <strong>${params.score}/100</strong> (endast rubrik — ingress kunde inte läsas)`
+        : `Poäng: <strong>${params.score}/100</strong>`
+
   return `
     <p>Hej!</p>
     <p>Din alarmindex-bedömning för <strong>${escapeHtml(params.newspaperName)}</strong> är klar.</p>
     <p><strong>«${escapeHtml(params.headline)}»</strong></p>
-    <p>Poäng: <strong>${params.score}/100</strong></p>
+    <p>${scoreBreakdown}</p>
     <p><a href="${params.assessmentUrl}">Visa och dela bedömningen</a></p>
     <p style="color:#666;font-size:14px;">Alarmindex mäter alarmistiskt formspråk — inte sanningshalt eller nyhetsvärde.</p>
   `

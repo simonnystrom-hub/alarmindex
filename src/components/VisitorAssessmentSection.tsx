@@ -31,8 +31,8 @@ export async function VisitorAssessmentSection({ slug, name, id }: VisitorAssess
           {VISITOR_ASSESSMENT_LABEL}
         </h2>
         <p className="mt-1 max-w-3xl text-sm leading-relaxed text-[var(--ink-muted)]">
-          Klistra in en artikel-URL från {name}. Vi analyserar rubriken med samma metod som det
-          officiella dagliga indexet och skickar resultatet till din e-post.
+          Klistra in en artikel-URL från {name}. Vi analyserar rubriken och ingressen med samma
+          metod som det officiella dagliga indexet och skickar resultatet till din e-post.
         </p>
       </div>
 

@@ -11,6 +11,10 @@ export type VisitorAssessment = {
   status: 'pending' | 'processing' | 'published' | 'failed'
   headlineText?: string
   subheading?: string
+  leadText?: string
+  leadMissing?: boolean
+  headlineDisplayScore?: number
+  leadDisplayScore?: number
   displayScore?: number
   threatIntensity?: number
   personalFraming?: number
@@ -19,6 +23,13 @@ export type VisitorAssessment = {
   emotionPrimary?: EmotionPrimary
   emotionIntensity?: number
   reasoning?: string
+  leadThreatIntensity?: number
+  leadPersonalFraming?: number
+  leadDecontextualization?: number
+  leadFormalIntensity?: number
+  leadEmotionPrimary?: EmotionPrimary
+  leadEmotionIntensity?: number
+  leadReasoning?: string
   promptVersion?: string
   modelVersion?: string
   failureReason?: string
@@ -50,6 +61,10 @@ const assessmentFields = `{
   status,
   headlineText,
   subheading,
+  leadText,
+  leadMissing,
+  headlineDisplayScore,
+  leadDisplayScore,
   displayScore,
   threatIntensity,
   personalFraming,
@@ -58,6 +73,13 @@ const assessmentFields = `{
   emotionPrimary,
   emotionIntensity,
   reasoning,
+  leadThreatIntensity,
+  leadPersonalFraming,
+  leadDecontextualization,
+  leadFormalIntensity,
+  leadEmotionPrimary,
+  leadEmotionIntensity,
+  leadReasoning,
   promptVersion,
   modelVersion,
   failureReason,

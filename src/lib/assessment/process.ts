@@ -1,11 +1,14 @@
-import { buildScoreFromDimensions } from '@/lib/assessment/build-score'
-import { extractArticleHeadline } from '@/lib/assessment/extract-article'
+import {
+  buildScoreFromDimensions,
+  combinedDisplayScore,
+} from '@/lib/assessment/build-score'
+import { extractArticleContent } from '@/lib/assessment/extract-article'
 import {
   buildFailureEmailHtml,
   buildSuccessEmailHtml,
   sendAssessmentEmail,
 } from '@/lib/assessment/send-email'
-import { scoreHeadlineWithAi } from '@/lib/assessment/score-headline'
+import { scoreArticleWithLead } from '@/lib/assessment/score-headline'
 import { getSanityWriteClient } from '@/lib/sanity/write-client'
 
 function siteBaseUrl(): string {
@@ -58,22 +61,38 @@ export async function processVisitorAssessment(documentId: string): Promise<void
       )
     }
 
-    const extracted = await extractArticleHeadline(assessment.sourceUrl)
-    const aiScore = await scoreHeadlineWithAi({
+    const extracted = await extractArticleContent(assessment.sourceUrl)
+    const aiScore = await scoreArticleWithLead({
       newspaperName: assessment.newspaper.name,
       date,
       headline: extracted.headline,
       subheading: extracted.subheading,
+      leadText: extracted.leadText,
     })
 
-    const built = buildScoreFromDimensions({
-      threatIntensity: aiScore.threatIntensity,
-      personalFraming: aiScore.personalFraming,
-      decontextualization: aiScore.decontextualization,
-      formalIntensity: aiScore.formalIntensity,
-      emotionPrimary: aiScore.emotionPrimary,
-      emotionIntensity: aiScore.emotionIntensity,
+    const headlineBuilt = buildScoreFromDimensions({
+      threatIntensity: aiScore.headline.threatIntensity,
+      personalFraming: aiScore.headline.personalFraming,
+      decontextualization: aiScore.headline.decontextualization,
+      formalIntensity: aiScore.headline.formalIntensity,
+      emotionPrimary: aiScore.headline.emotionPrimary,
+      emotionIntensity: aiScore.headline.emotionIntensity,
     })
+
+    const leadBuilt = aiScore.lead
+      ? buildScoreFromDimensions({
+          threatIntensity: aiScore.lead.threatIntensity,
+          personalFraming: aiScore.lead.personalFraming,
+          decontextualization: aiScore.lead.decontextualization,
+          formalIntensity: aiScore.lead.formalIntensity,
+          emotionPrimary: aiScore.lead.emotionPrimary,
+          emotionIntensity: aiScore.lead.emotionIntensity,
+        })
+      : null
+
+    const headlineDisplayScore = headlineBuilt.displayScore
+    const leadDisplayScore = leadBuilt?.displayScore
+    const displayScore = combinedDisplayScore(headlineDisplayScore, leadDisplayScore)
 
     await client
       .patch(assessment._id)
@@ -81,16 +100,27 @@ export async function processVisitorAssessment(documentId: string): Promise<void
         status: 'published',
         headlineText: extracted.headline,
         subheading: extracted.subheading,
-        displayScore: built.displayScore,
-        threatIntensity: built.threatIntensity,
-        personalFraming: built.personalFraming,
-        decontextualization: built.decontextualization,
-        formalIntensity: built.formalIntensity,
-        emotionPrimary: built.emotionPrimary,
-        emotionIntensity: built.emotionIntensity,
-        reasoning: aiScore.reasoning,
-        promptVersion: aiScore.promptVersion,
-        modelVersion: aiScore.modelVersion,
+        leadText: extracted.leadText ?? null,
+        leadMissing: !extracted.leadText,
+        headlineDisplayScore,
+        leadDisplayScore: leadDisplayScore ?? null,
+        displayScore,
+        threatIntensity: headlineBuilt.threatIntensity,
+        personalFraming: headlineBuilt.personalFraming,
+        decontextualization: headlineBuilt.decontextualization,
+        formalIntensity: headlineBuilt.formalIntensity,
+        emotionPrimary: headlineBuilt.emotionPrimary,
+        emotionIntensity: headlineBuilt.emotionIntensity,
+        reasoning: aiScore.headline.reasoning,
+        leadThreatIntensity: leadBuilt?.threatIntensity ?? null,
+        leadPersonalFraming: leadBuilt?.personalFraming ?? null,
+        leadDecontextualization: leadBuilt?.decontextualization ?? null,
+        leadFormalIntensity: leadBuilt?.formalIntensity ?? null,
+        leadEmotionPrimary: leadBuilt?.emotionPrimary ?? null,
+        leadEmotionIntensity: leadBuilt?.emotionIntensity ?? null,
+        leadReasoning: aiScore.lead?.reasoning ?? null,
+        promptVersion: aiScore.headline.promptVersion,
+        modelVersion: aiScore.headline.modelVersion,
         processedAt: new Date().toISOString(),
         failureReason: null,
       })
@@ -101,7 +131,10 @@ export async function processVisitorAssessment(documentId: string): Promise<void
       subject: 'Din alarmindex-bedömning är klar',
       html: buildSuccessEmailHtml({
         headline: extracted.headline,
-        score: built.displayScore,
+        score: displayScore,
+        headlineScore: headlineDisplayScore,
+        leadScore: leadDisplayScore,
+        leadMissing: !extracted.leadText,
         newspaperName: assessment.newspaper.name,
         assessmentUrl,
       }),

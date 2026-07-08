@@ -22,7 +22,7 @@ export default function IntegritetPage() {
           <h2 className="font-serif text-xl font-semibold text-[var(--ink)]">Besökarbedömningar</h2>
           <p className="mt-3 text-sm leading-relaxed">
             När du skickar in en artikel-URL för bedömning behandlar vi din e-postadress för att
-            skicka resultatet till dig. Genom att klicka på &quot;Bedöm rubrik&quot; samtycker du
+            skicka resultatet till dig. Genom att klicka på &quot;Bedöm artikel&quot; samtycker du
             till den behandlingen.
           </p>
           <p className="mt-3 text-sm leading-relaxed">

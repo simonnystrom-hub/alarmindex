@@ -1,6 +1,6 @@
 import type { EmotionPrimary } from '@/lib/scoring'
 
-export const PROMPT_VERSION = '1.1.0'
+export const PROMPT_VERSION = '1.2.0'
 
 export const EXPOSURE_WEIGHT_ABOVE_FOLD = 1.5
 export const THEORETICAL_MAX_FINAL = 20 * EXPOSURE_WEIGHT_ABOVE_FOLD
@@ -26,6 +26,11 @@ export function contentScore(dimensions: DimensionScores): number {
 
 export function displayScoreFromFinal(final: number): number {
   return Math.round((final / THEORETICAL_MAX_FINAL) * 100)
+}
+
+export function combinedDisplayScore(headlineScore: number, leadScore?: number): number {
+  if (leadScore == null) return headlineScore
+  return Math.round((headlineScore + leadScore) / 2)
 }
 
 export function buildScoreFromDimensions(dimensions: DimensionScores) {

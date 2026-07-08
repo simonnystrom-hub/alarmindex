@@ -16,9 +16,9 @@ export async function AssessArticleHomeSection() {
       <div className="border-b border-[var(--border)] bg-[var(--surface-muted)] px-5 py-4 sm:px-6">
         <h2 className="font-serif text-xl font-semibold text-[var(--ink)]">Bedöm en artikel</h2>
         <p className="mt-1 max-w-3xl text-sm leading-relaxed text-[var(--ink-muted)]">
-          Klistra in en artikel-URL från en av våra listade tidningar. Du får ett alarmindex-poäng
-          för rubriken — med samma metod som det officiella dagliga indexet, men för en artikel du
-          väljer själv.
+          Klistra in en artikel-URL från en av våra listade tidningar. Du får alarmindex-poäng för
+          rubriken och ingressen — med samma metod som det officiella dagliga indexet, men för en
+          artikel du väljer själv.
         </p>
       </div>
 
