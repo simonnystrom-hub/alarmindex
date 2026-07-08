@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/", label: "Dagens index", hideOnHome: true },
+  { href: "/#bedom-artikel", label: "Bedöm en artikel" },
   { href: "/metodik", label: "Metodik" },
 ] as const;
 
