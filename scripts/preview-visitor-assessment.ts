@@ -7,6 +7,7 @@
  *
  * Dokumenterat i Sanity Studio under Besökarbedömningar → Verktyg & torrkörning.
  */
+import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
 
 for (const file of ['.env.local', '.env']) {

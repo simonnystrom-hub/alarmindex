@@ -176,10 +176,19 @@ Separat från löpsedelns glidande medelvärde — tydlig etikett.
 
 | Typ | Metod |
 |-----|--------|
-| **Artikel** | 1) JSON-LD `headline` 2) `og:title` 3) tidningsspecifika selektorer |
+| **Artikel** | Rubrik: JSON-LD `headline` → `og:title` → `<title>`. Ingress: JSON-LD `articleBody` (första stycke) → `og:description` → första `<p>`, max ~800 tecken. |
 | **Löpsedel** | Befintlig pipeline (`run-pipeline.ts`) — en körning, spara som visitorAssessment |
 
-Artikelscraping utökar `newspaper-scrape-config.ts` med artikel-selektorer per tidning.
+## Poängsättning (artikel)
+
+- Rubrik och ingress poängsätts **separat** med samma fem dimensioner (1–10 → 0–100).
+- **Sammanlagt poäng** = medel av rubrik och ingress.
+- **Motivering** sparas per text (rubrik respektive ingress).
+- Om ingress saknas: endast rubrik, med `leadMissing`-markering i UI.
+- Exponeringsvikt × 1,5 för båda (artikelns “above the fold”).
+- `PROMPT_VERSION` 1.2.0+ för dubbel bedömning.
+
+Artikelscraping kan utökas med tidningsspecifika selektorer i `newspaper-scrape-config.ts` (fas 5).
 
 ---
 

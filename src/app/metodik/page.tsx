@@ -20,7 +20,7 @@ const dimensions = [
   },
   {
     name: "Kontextlöshet",
-    text: "När rubriken saknar proportion eller sammanhang.",
+    text: "När texten saknar proportion, basnivå eller sammanhang.",
   },
   {
     name: "Formspråksintensitet",
@@ -134,6 +134,128 @@ export default function MethodologyPage() {
       </section>
 
       <section className="space-y-4">
+        <h2 className="font-serif text-2xl font-semibold text-[var(--ink)]">
+          Besökarbedömningar (enskilda artiklar)
+        </h2>
+        <p className="max-w-3xl text-[var(--ink-muted)]">
+          Utöver det dagliga löpsedelsindexet kan besökare skicka in en artikel-URL från en
+          listade tidning och få en separat{' '}
+          <Link href="/#bedom-artikel" className="text-[var(--accent)] hover:underline">
+            besökarbedömning
+          </Link>
+          . Den ingår <strong className="font-medium text-[var(--ink)]">inte</strong> i dagens
+          rankningar eller det officiella dagindexet — men använder samma fem dimensioner och
+          samma 0–100-skala.
+        </p>
+
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-card)]">
+          <h3 className="font-semibold text-[var(--ink)]">Vad som bedöms</h3>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-[var(--ink-muted)]">
+            <li>
+              <strong className="text-[var(--ink)]">Rubriken</strong> på artikelsidan poängsätts
+              för sig.
+            </li>
+            <li>
+              <strong className="text-[var(--ink)]">Ingressen</strong> (artikelns inledande stycke)
+              poängsätts också för sig — den är ofta avgörande för hur artikeln formulerar hot
+              och känslor efter klick.
+            </li>
+            <li>
+              <strong className="text-[var(--ink)]">Sammanlagt poäng</strong> är medelvärdet av
+              rubrik och ingress (avrundat till heltal 0–100).
+            </li>
+            <li>
+              Resten av artikeltexten läses inte in och bedöms inte.
+            </li>
+          </ul>
+        </div>
+
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-card)]">
+          <h3 className="font-semibold text-[var(--ink)]">Hur ingressen hämtas</h3>
+          <p className="mt-2 text-[var(--ink-muted)]">
+            Vi hämtar sidans HTML och letar efter ingress i denna ordning:
+          </p>
+          <ol className="mt-3 list-decimal space-y-2 pl-5 text-[var(--ink-muted)]">
+            <li>Strukturerad data (JSON-LD) med fältet <code className="text-sm">articleBody</code></li>
+            <li>Meta-beskrivning (<code className="text-sm">og:description</code>)</li>
+            <li>Första stycket i artikelns HTML</li>
+          </ol>
+          <p className="mt-3 text-[var(--ink-muted)]">
+            Ingressen trunkeras till cirka 800 tecken. Om sidan inte går att läsa (t.ex. paywall
+            eller inloggning) publiceras bedömningen med{' '}
+            <strong className="text-[var(--ink)]">endast rubrik</strong> och en tydlig varning på
+            resultatsidan.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-card)]">
+          <h3 className="font-semibold text-[var(--ink)]">Poäng och motivering</h3>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-[var(--ink-muted)]">
+            <li>
+              AI-modellen ger dimensionpoäng 1–10 för rubrik respektive ingress, som mappas till
+              samma interna skala och 0–100-visning som löpsedelsrubriker.
+            </li>
+            <li>
+              Båda texterna antas ha{' '}
+              <strong className="text-[var(--ink)]">exponeringsvikt × 1,5</strong> — motsvarande
+              det läsaren möter först på en artikelsida (rubrik och ingress ovanför brödtexten).
+            </li>
+            <li>
+              För varje text sparas en{' '}
+              <strong className="text-[var(--ink)]">motivering</strong>: en kort förklaring per
+              dimension, som visas på bedömningssidan tillsammans med dimensionpoängen.
+            </li>
+            <li>
+              Metodversion (<code className="text-sm">promptVersion</code>) och modell anges på
+              varje publicerad bedömning.
+            </li>
+          </ul>
+        </div>
+
+        <table className="w-full overflow-hidden rounded-xl border border-[var(--border)] text-left text-sm">
+          <thead className="bg-[var(--surface-muted)]">
+            <tr>
+              <th className="p-3 font-medium text-[var(--ink)]" />
+              <th className="p-3 font-medium text-[var(--ink)]">Officiellt dagindex</th>
+              <th className="p-3 font-medium text-[var(--ink)]">Besökarbedömning</th>
+            </tr>
+          </thead>
+          <tbody className="text-[var(--ink-muted)]">
+            <tr className="border-t border-[var(--border)]">
+              <td className="p-3 font-medium text-[var(--ink)]">Underlag</td>
+              <td className="p-3">Mobil löpsedel, alla synliga rubriker</td>
+              <td className="p-3">En artikel-URL: rubrik + ingress</td>
+            </tr>
+            <tr className="border-t border-[var(--border)]">
+              <td className="p-3 font-medium text-[var(--ink)]">Aggregering</td>
+              <td className="p-3">70 % högsta + 30 % snitt per dag</td>
+              <td className="p-3">Medel av rubrik och ingress</td>
+            </tr>
+            <tr className="border-t border-[var(--border)]">
+              <td className="p-3 font-medium text-[var(--ink)]">Exponering</td>
+              <td className="p-3">× 1,5 eller × 1,0 beroende på scroll</td>
+              <td className="p-3">× 1,5 för rubrik och ingress</td>
+            </tr>
+            <tr className="border-t border-[var(--border)]">
+              <td className="p-3 font-medium text-[var(--ink)]">Motivering</td>
+              <td className="p-3">Per rubrik på dagssidan</td>
+              <td className="p-3">Separat för rubrik och ingress</td>
+            </tr>
+            <tr className="border-t border-[var(--border)]">
+              <td className="p-3 font-medium text-[var(--ink)]">Jämförbarhet</td>
+              <td className="p-3">Tidsserie per tidning</td>
+              <td className="p-3">Separat snitt per tidning; ej blandat i dagliga listor</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p className="max-w-3xl text-sm text-[var(--ink-muted)]">
+          Samma normaliserade artikel-URL bedöms bara en gång. Senare inskick pekar om till
+          befintlig bedömning.
+        </p>
+      </section>
+
+      <section className="space-y-4">
         <h2 className="font-serif text-2xl font-semibold text-[var(--ink)]">Tidningar i indexet</h2>
         <p className="max-w-3xl text-[var(--ink-muted)]">
           {newspapers.join(", ")}. Urvalet speglar bredd i svensk
@@ -144,8 +266,12 @@ export default function MethodologyPage() {
       <section className="space-y-4">
         <h2 className="font-serif text-2xl font-semibold text-[var(--ink)]">Öppenhet</h2>
         <p className="max-w-3xl text-[var(--ink-muted)]">
-          Varje rubrik sparas med modellens motivering, prompt-version och modellversion.
-          Om metoden uppdateras dokumenteras det — historiska poäng blandas inte tyst.
+          Varje rubrik i det dagliga indexet sparas med modellens motivering, prompt-version och
+          modellversion. Besökarbedömningar sparar motivering{' '}
+          <strong className="font-medium text-[var(--ink)]">för rubrik och ingress var för sig</strong>
+          , plus vilken metodversion som användes. Om metoden uppdateras dokumenteras det här —
+          historiska poäng blandas inte tyst. Äldre bedömningar kan behöva omräknas manuellt vid
+          större metodskiften.
         </p>
       </section>
 
