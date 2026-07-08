@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/PageHeader";
+import { VisitorAssessmentSection } from "@/components/VisitorAssessmentSection";
 import { ScoreBar } from "@/components/ScoreBar";
 import { SnapshotScreenshots } from "@/components/SnapshotScreenshots";
 import { EMOTION_LABELS, type EmotionPrimary } from "@/lib/scoring";
@@ -46,8 +48,18 @@ export default async function DayNewspaperPage({ params }: PageProps) {
         title={snapshot.newspaper.name}
         description={`Alla rubriker och poäng för ${date}.`}
       >
-        <div className="max-w-xs pt-2">
-          <ScoreBar score={snapshot.dailyScore ?? 0} label={OFFICIAL_DAILY_SCORE_LABEL} />
+        <div className="space-y-3 pt-2">
+          <div className="max-w-xs">
+            <ScoreBar score={snapshot.dailyScore ?? 0} label={OFFICIAL_DAILY_SCORE_LABEL} />
+          </div>
+          <p className="text-sm text-[var(--ink-muted)]">
+            <Link
+              href={`/tidning/${slug}`}
+              className="font-medium text-[var(--accent)] hover:underline"
+            >
+              Se {snapshot.newspaper.name}s summeringssida →
+            </Link>
+          </p>
         </div>
       </PageHeader>
 
@@ -163,6 +175,8 @@ export default async function DayNewspaperPage({ params }: PageProps) {
           );
         })}
       </div>
+
+      <VisitorAssessmentSection slug={slug} name={snapshot.newspaper.name} />
     </div>
   );
 }

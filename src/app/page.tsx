@@ -46,7 +46,11 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-10 sm:space-y-12">
-      <PageHeader eyebrow="Daglig mätning" title="Alarmindex — formspråk i svenska nyhetsrubriker">
+      <PageHeader
+        eyebrow="Daglig mätning"
+        title="Alarmindex — formspråk i svenska nyhetsrubriker"
+        description="Varje tidning har en egen summeringssida med historik, grafer och besökarbedömningar. Klicka på tidningens namn i listan nedan för att följa den över tid."
+      >
         <div className="flex flex-wrap gap-3 pt-2 text-sm">
           <Link
             href="/metodik"

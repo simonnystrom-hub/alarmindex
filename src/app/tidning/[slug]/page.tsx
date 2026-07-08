@@ -6,6 +6,7 @@ import { ChartSkeleton } from "@/components/charts/ChartSkeleton";
 import { NewspaperMovingAverageSection } from "@/components/charts/NewspaperMovingAverageSection";
 import { PageHeader } from "@/components/PageHeader";
 import { ScoreBar } from "@/components/ScoreBar";
+import { VisitorAssessmentSection } from "@/components/VisitorAssessmentSection";
 import { OFFICIAL_DAILY_SCORE_LABEL } from "@/lib/score-labels";
 import { toSingleSeries } from "@/lib/chart-data";
 import { getNewspaperBySlug, getNewspaperHistory } from "@/lib/sanity/queries";
@@ -56,18 +57,6 @@ export default async function NewspaperPage({ params }: PageProps) {
         description="Officiellt dagindex — tidsserie för daglig formspråksintensitet i rubriker, baserat på mobil exponering."
       />
 
-      <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface-muted)] px-5 py-4 sm:px-6">
-        <p className="text-sm text-[var(--ink-muted)]">
-          Vill du bedöma en enskild artikel?{' '}
-          <Link
-            href={`/tidning/${slug}/bedom`}
-            className="font-medium text-[var(--accent)] hover:underline"
-          >
-            Bedöm en artikel från {newspaper.name} →
-          </Link>
-        </p>
-      </section>
-
       <DailyScoreLineChart
         newspaperName={newspaper.name}
         slug={slug}
@@ -80,6 +69,8 @@ export default async function NewspaperPage({ params }: PageProps) {
         history={history}
         dateLabel={latestDate}
       />
+
+      <VisitorAssessmentSection id="besokarbedomning" slug={slug} name={newspaper.name} />
 
       {history.length === 0 ? (
         <p className="text-[var(--ink-muted)]">Ingen publicerad historik ännu.</p>

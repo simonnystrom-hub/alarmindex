@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { AlarmIndexScale } from "@/components/AlarmIndexScale";
-import { DayEditionRankingList, NewspaperDayLink } from "@/components/DayEditionRankingList";
+import {
+  DayEditionRankingList,
+  NewspaperSummaryLink,
+} from "@/components/DayEditionRankingList";
 import { NewspaperSwatch } from "@/components/NewspaperSwatch";
 import { PageHeader } from "@/components/PageHeader";
 import { ScoreBadge } from "@/components/ScoreBar";
@@ -88,8 +91,7 @@ export default async function DayPage({ params }: PageProps) {
                 </p>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   <NewspaperSwatch slug={highest.newspaper.slug} size="md" />
-                  <NewspaperDayLink
-                    date={date}
+                  <NewspaperSummaryLink
                     slug={highest.newspaper.slug}
                     name={highest.newspaper.name}
                     className="font-semibold hover:opacity-80"
@@ -109,8 +111,7 @@ export default async function DayPage({ params }: PageProps) {
                 </p>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   <NewspaperSwatch slug={lowest.newspaper.slug} size="md" />
-                  <NewspaperDayLink
-                    date={date}
+                  <NewspaperSummaryLink
                     slug={lowest.newspaper.slug}
                     name={lowest.newspaper.name}
                     className="font-semibold hover:opacity-80"

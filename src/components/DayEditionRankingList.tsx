@@ -6,24 +6,40 @@ import { newspaperColor, newspaperColorSoft } from "@/lib/newspaper-colors";
 import { OFFICIAL_DAILY_SCORE_LABEL } from "@/lib/score-labels";
 import type { DailyEdition } from "@/lib/sanity/types";
 
-export function NewspaperDayLink({
-  date,
+export function NewspaperSummaryLink({
   slug,
   name,
   className = "text-lg font-semibold hover:opacity-80",
 }: {
-  date: string;
   slug: string;
   name: string;
   className?: string;
 }) {
   return (
     <Link
-      href={`/dag/${date}/${slug}`}
+      href={`/tidning/${slug}`}
       className={className}
       style={{ color: newspaperColor(slug) }}
     >
       {name}
+    </Link>
+  );
+}
+
+export function NewspaperDayEditionLink({
+  date,
+  slug,
+  label = "Dagens rubriker",
+  className = "text-xs font-medium text-[var(--accent)] hover:underline",
+}: {
+  date: string;
+  slug: string;
+  label?: string;
+  className?: string;
+}) {
+  return (
+    <Link href={`/dag/${date}/${slug}`} className={className}>
+      {label} →
     </Link>
   );
 }
@@ -55,13 +71,15 @@ export function DayEditionRankingList({ ranked, date, footerLink }: DayEditionRa
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2.5">
                       <NewspaperSwatch slug={row.newspaper.slug} size="md" />
-                      <NewspaperDayLink
-                        date={date}
+                      <NewspaperSummaryLink
                         slug={row.newspaper.slug}
                         name={row.newspaper.name}
                       />
                       <ScoreBadge score={row.dailyScore ?? 0} />
                     </div>
+                    <p className="mt-1">
+                      <NewspaperDayEditionLink date={date} slug={row.newspaper.slug} />
+                    </p>
                     {row.headlines && row.headlines.length > 0 ? (
                       <DayEditionHeadlineList
                         slug={row.newspaper.slug}

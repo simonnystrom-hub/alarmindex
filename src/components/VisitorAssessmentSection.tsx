@@ -10,9 +10,10 @@ import { newspaperColor } from '@/lib/newspaper-colors'
 type VisitorAssessmentSectionProps = {
   slug: string
   name: string
+  id?: string
 }
 
-export async function VisitorAssessmentSection({ slug, name }: VisitorAssessmentSectionProps) {
+export async function VisitorAssessmentSection({ slug, name, id }: VisitorAssessmentSectionProps) {
   const [recent, average] = await Promise.all([
     getVisitorAssessmentsForNewspaper(slug, 10),
     getVisitorAssessmentAverageForNewspaper(slug),
@@ -21,7 +22,10 @@ export async function VisitorAssessmentSection({ slug, name }: VisitorAssessment
   const color = newspaperColor(slug)
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]">
+    <section
+      id={id}
+      className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)]"
+    >
       <div className="border-b border-[var(--border)] bg-[var(--surface-muted)] px-5 py-4 sm:px-6">
         <h2 className="font-serif text-xl font-semibold text-[var(--ink)]">
           {VISITOR_ASSESSMENT_LABEL}
