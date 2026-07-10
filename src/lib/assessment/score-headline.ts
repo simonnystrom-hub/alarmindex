@@ -7,6 +7,7 @@ import {
   buildArticleWithLeadUserPrompt,
   buildScoringUserPrompt,
 } from './scoring-prompt'
+import { normalizeReasoning } from './normalize-reasoning'
 import { normalizeAiDimensionToInternal04 } from './dimension-scale'
 
 const FALLBACK_MODEL = 'claude-haiku-4-5-20251001'
@@ -35,7 +36,7 @@ type RawAiJson = {
   formal_intensity: number
   emotion_primary: EmotionPrimary
   emotion_intensity: number
-  reasoning: string
+  reasoning: unknown
 }
 
 type RawArticleAiJson = {
@@ -67,7 +68,7 @@ function rawToAiScore(raw: RawAiJson, modelVersion: string): AiScoreResult {
     formalIntensity: normalizeAiDimensionToInternal04(raw.formal_intensity),
     emotionPrimary: raw.emotion_primary,
     emotionIntensity: normalizeAiDimensionToInternal04(raw.emotion_intensity),
-    reasoning: raw.reasoning,
+    reasoning: normalizeReasoning(raw.reasoning),
     promptVersion: PROMPT_VERSION,
     modelVersion,
   }
