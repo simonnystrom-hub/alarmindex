@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Source_Serif_4, IBM_Plex_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { PreviewBanner } from "@/components/PreviewBanner";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { getSiteSettings } from "@/lib/sanity/queries";
@@ -46,6 +47,7 @@ export default function RootLayout({
         <SiteHeader />
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-4 sm:py-12">{children}</main>
         <SiteFooter />
+        <Analytics />
       </body>
     </html>
   );
