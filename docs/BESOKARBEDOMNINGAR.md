@@ -186,7 +186,7 @@ Separat från löpsedelns glidande medelvärde — tydlig etikett.
 - **Motivering** sparas per text (rubrik respektive ingress).
 - Om ingress saknas: endast rubrik, med `leadMissing`-markering i UI.
 - Exponeringsvikt × 1,5 för båda (artikelns “above the fold”).
-- `PROMPT_VERSION` 1.2.0+ för dubbel bedömning.
+- `PROMPT_VERSION` 1.2.1+ (1–10-skala mappas alltid korrekt till intern 0–4).
 
 Artikelscraping kan utökas med tidningsspecifika selektorer i `newspaper-scrape-config.ts` (fas 5).
 

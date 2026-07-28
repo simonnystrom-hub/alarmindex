@@ -1,6 +1,6 @@
 import type { EmotionPrimary } from '@/lib/scoring'
 
-export const PROMPT_VERSION = '1.2.0'
+export const PROMPT_VERSION = '1.2.1'
 
 export const EXPOSURE_WEIGHT_ABOVE_FOLD = 1.5
 export const THEORETICAL_MAX_FINAL = 20 * EXPOSURE_WEIGHT_ABOVE_FOLD

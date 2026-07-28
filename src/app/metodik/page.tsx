@@ -58,7 +58,8 @@ export default function MethodologyPage() {
         <h2 className="font-serif text-xl font-semibold text-[var(--ink)]">Kortversion</h2>
         <ul className="mt-4 list-disc space-y-2 pl-5 text-[var(--ink-muted)]">
           <li>
-            Fem dimensioner, 1–10 poäng vardera → mappas till 0–4 internt → innehållspoäng 0–20 → visning 0–100.
+            Fem dimensioner, 1–10 poäng vardera → mappas till 0–4 internt (1→0, 10→4) →
+            innehållspoäng 0–20 → visning 0–100.
           </li>
           <li>Exponeringsvikt (mobil, synlig utan scroll × 1,5) räknas i kod — inte av AI.</li>
           <li>
@@ -263,15 +264,50 @@ export default function MethodologyPage() {
         </p>
       </section>
 
+      <section id="metodandringar" className="scroll-mt-8 space-y-4">
+        <h2 className="font-serif text-2xl font-semibold text-[var(--ink)]">Metodändringar</h2>
+        <p className="max-w-3xl text-[var(--ink-muted)]">
+          När beräkningen ändras dokumenteras det här. Äldre poäng skrivs inte om i tysthet —
+          varje bedömning bär sin metodversion (<code className="text-sm">promptVersion</code>).
+        </p>
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-card)]">
+          <p className="text-xs font-semibold uppercase tracking-wide text-[var(--ink-subtle)]">
+            28 juli 2026 · metodversion 1.2.1
+          </p>
+          <h3 className="mt-2 font-semibold text-[var(--ink)]">
+            Fix: dimensionskala 1–10 mappades fel
+          </h3>
+          <p className="mt-2 text-[var(--ink-muted)]">
+            AI:n har sedan tidigare graderat varje dimension på skalan 1–10. En felaktig
+            normalisering tolkade värden 1–4 som om de redan låg på den interna skalan 0–4.
+            Följden blev att måttliga poäng (t.ex. hotintensitet 4/10) kunde visas som 10/10
+            och därmed blåsa upp alarmindexet — särskilt för rubriker med måttlig men inte
+            extrem hotformulering.
+          </p>
+          <p className="mt-3 text-[var(--ink-muted)]">
+            Från och med metodversion <strong className="text-[var(--ink)]">1.2.1</strong>{' '}
+            mappas AI:s 1–10 alltid korrekt till den interna skalan (1→0, 10→4) innan
+            0–100-poängen räknas. Prompttexten och dimensionsdefinitionerna är oförändrade;
+            det är bara översättningen till intern poäng som rättats.
+          </p>
+          <p className="mt-3 text-sm text-[var(--ink-muted)]">
+            Poäng publicerade före denna fix (metodversion 1.2.0 och tidigare) kan innehålla
+            uppblåsta dimensionsvärden och är inte direkt jämförbara med nya bedömningar.
+          </p>
+        </div>
+      </section>
+
       <section className="space-y-4">
         <h2 className="font-serif text-2xl font-semibold text-[var(--ink)]">Öppenhet</h2>
         <p className="max-w-3xl text-[var(--ink-muted)]">
           Varje rubrik i det dagliga indexet sparas med modellens motivering, prompt-version och
           modellversion. Besökarbedömningar sparar motivering{' '}
           <strong className="font-medium text-[var(--ink)]">för rubrik och ingress var för sig</strong>
-          , plus vilken metodversion som användes. Om metoden uppdateras dokumenteras det här —
-          historiska poäng blandas inte tyst. Äldre bedömningar kan behöva omräknas manuellt vid
-          större metodskiften.
+          , plus vilken metodversion som användes. Se{' '}
+          <a href="#metodandringar" className="text-[var(--accent)] hover:underline">
+            metodändringar
+          </a>{' '}
+          när beräkningen uppdateras — historiska poäng blandas inte tyst.
         </p>
       </section>
 

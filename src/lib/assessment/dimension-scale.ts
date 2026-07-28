@@ -9,8 +9,8 @@ function clamp(value: number, min: number, max: number): number {
 }
 
 /**
- * Mappning som gör att vi kan ändra AI:s "display-skala" till 1–10
- * utan att bryta hela indexberäkningen (som fortfarande förväntar 0–4 internt).
+ * AI graderar på 1–10.
+ * Vi mappar till intern 0–4 så att 0–100-beräkningen behåller samma beteende.
  *
  * 1  -> 0
  * 10 -> 4
@@ -27,16 +27,18 @@ export function display10ToInternal04(value: number): number {
  */
 export function internal04ToDisplay10(value: number): number {
   const v = clamp(value, INTERNAL_MIN, INTERNAL_MAX)
-  return DISPLAY10_MIN + ((v - INTERNAL_MIN) * (DISPLAY10_MAX - DISPLAY10_MIN)) / (INTERNAL_MAX - INTERNAL_MIN)
+  return (
+    DISPLAY10_MIN +
+    ((v - INTERNAL_MIN) * (DISPLAY10_MAX - DISPLAY10_MIN)) / (INTERNAL_MAX - INTERNAL_MIN)
+  )
 }
 
 /**
- * Robust normalisering om modellen (av misstag) fortfarande output:ar 0–4.
- * Returnerar alltid intern 0–4 (kan vara flyttal).
+ * Tolka AI-dimensioner som 1–10 och mappa till intern 0–4.
+ *
+ * Från metodversion 1.2.1: vi antar alltid 1–10. Tidigare heuristik
+ * (värden ≤4 = gammal 0–4-skala) blåste upp måttliga poäng till max.
  */
 export function normalizeAiDimensionToInternal04(value: number): number {
-  // Heuristik: om den ligger i 0–4 antar vi att det är "old behavior"
-  if (value >= INTERNAL_MIN && value <= INTERNAL_MAX) return clamp(value, INTERNAL_MIN, INTERNAL_MAX)
   return display10ToInternal04(value)
 }
-
